@@ -27,6 +27,9 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F3EA" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141210" />
     <link rel="canonical" href={canonicalURL} />
 
     <title>{title === 'Fleuron' ? title : `${title} — Fleuron`}</title>
