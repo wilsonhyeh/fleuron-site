@@ -79,7 +79,7 @@ The password-reset mail infrastructure on `mail.fleuron.study` is independent an
 
 ## 6. Merge App Repo Documentation Branch
 
-In `/Users/wilsonyeh/Developer/codemap`:
+In `~/Developer/codemap`:
 
 ```bash
 # Verify branch commits
