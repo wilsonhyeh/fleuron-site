@@ -1,0 +1,246 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Frame from '../components/Frame.astro';
+import Rule from '../components/Rule.astro';
+import BoundaryDiagram from '../components/BoundaryDiagram.astro';
+import Callout from '../components/Callout.astro';
+import { fetchLatestRelease } from '../lib/release';
+
+const release = await fetchLatestRelease();
+---
+
+<Layout
+  title="Privacy & Data Boundary"
+  description="Exact data boundary disclosure for Fleuron desktop app and fleuron.study website. No analytics, no tracking, zero third-party requests."
+  releaseVersion={release.version}
+  releaseDate={release.publishedAt}
+>
+  <div class="privacy-page">
+    <header class="page-header">
+      <h1 class="page-title">Privacy & Data Boundary</h1>
+      <p class="page-lead">
+        Fleuron is designed for research where raw transcripts and sensitive quotes must not leave your control. This page discloses the data boundaries for both the application and this website.
+      </p>
+    </header>
+
+    <Rule />
+
+    <!-- Part 1: The Application -->
+    <section class="section-app-privacy">
+      <h2 class="section-title">1. The desktop application</h2>
+      <p class="section-text">
+        Fleuron runs locally on your computer. When used offline, zero network requests occur. When you choose to use optional team collaboration features, only metadata crosses to the sync server.
+      </p>
+
+      <BoundaryDiagram showLink={false} />
+
+      <h3 class="subsection-title">Data boundary field disclosure</h3>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Synced when collaboration is active</th>
+              <th>Kept strictly on local disk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Account & Access</strong></td>
+              <td>Account email, auth metadata, study membership, coder display name, device sync state</td>
+              <td>Session refresh tokens, local application preferences, working folder paths</td>
+            </tr>
+            <tr>
+              <td><strong>Study Identity</strong></td>
+              <td>Study title, de-identified participant IDs, interview IDs, segment counts, content hashes</td>
+              <td>Raw transcript files, full transcript text, original filenames, interview dates, diagnosis fields</td>
+            </tr>
+            <tr>
+              <td><strong>Codebook</strong></td>
+              <td>Code IDs, code names, definitions, inclusion criteria, exclusion criteria, examples, hierarchy, color</td>
+              <td>None (codebook text syncs word-for-word so teams share definitions; author them de-identified)</td>
+            </tr>
+            <tr>
+              <td><strong>Coding</strong></td>
+              <td>Coder attribution, segment IDs, code IDs, character start/end offsets, timestamps</td>
+              <td>Verbatim quote text, coding memos, analytic memos, reflective notes</td>
+            </tr>
+            <tr>
+              <td><strong>Output & Diagnostics</strong></td>
+              <td>Nothing automatically</td>
+              <td>Exported reports, local SQLite databases, backup files, crash logs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Callout title="Important research caveats">
+        <ul class="caveat-list">
+          <li>
+            <strong>De-identification is researcher-owned:</strong> Study/participant labels and codebook definitions sync word-for-word across team members. Write them de-identified from the beginning.
+          </li>
+          <li>
+            <strong>Transport encryption vs operator access:</strong> HTTPS/WSS encrypts data in transit. This protects against wiretapping, but does not make synced metadata unknowable to the server host.
+          </li>
+          <li>
+            <strong>Protocol support vs compliance:</strong> Fleuron can support a research protocol; it does not certify compliance of any kind.
+          </li>
+        </ul>
+      </Callout>
+
+      <div class="doc-links">
+        <a href="https://github.com/wilson-taiwan/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md" target="_blank" rel="noopener noreferrer" class="doc-link">
+          Read docs/PRIVACY-AND-PERMISSIONS.md on GitHub →
+        </a>
+        <a href="https://github.com/wilson-taiwan/fleuron/blob/main/docs/IT-DEPLOYMENT.md" target="_blank" rel="noopener noreferrer" class="doc-link">
+          Read docs/IT-DEPLOYMENT.md on GitHub →
+        </a>
+      </div>
+    </section>
+
+    <Rule />
+
+    <!-- Part 2: The Website -->
+    <section class="section-web-privacy">
+      <h2 class="section-title">2. This website (fleuron.study)</h2>
+      <p class="section-text">
+        The website you are reading right now collects nothing and tracks nothing. It is built as static HTML and hosted on Cloudflare Pages.
+      </p>
+
+      <Frame class="guarantee-card">
+        <ul class="guarantee-list">
+          <li><strong>No analytics:</strong> We run no Google Analytics, Plausible, PostHog, or tracking pixels.</li>
+          <li><strong>No cookies:</strong> No cookie banner is needed because no cookies or trackers are set.</li>
+          <li><strong>No forms or inputs:</strong> We collect no emails, names, newsletters, or visitor submissions.</li>
+          <li><strong>Zero third-party requests:</strong> All fonts, stylesheets, scripts, and images are self-hosted. Your browser makes zero requests to third-party CDNs.</li>
+          <li><strong>Enforced by build gates:</strong> This claim is not just an intention. Every build must pass an automated CI test (<code class="mono-code">npm run check:no-external</code>) that scans every generated HTML and CSS file and fails if any third-party external request exists.</li>
+        </ul>
+      </Frame>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .privacy-page {
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-lead {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .subsection-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+  }
+
+  .section-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+  }
+
+  .data-table th,
+  .data-table td {
+    border: 1px solid var(--rule);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .data-table th {
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  .caveat-list {
+    margin: 0.5rem 0 0.5rem 1.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .caveat-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .caveat-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .doc-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .doc-link {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .guarantee-card {
+    margin: 1.5rem 0;
+  }
+
+  .guarantee-list {
+    margin: 0.5rem 0 0.5rem 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  .guarantee-list li {
+    margin-bottom: 0.75rem;
+  }
+
+  .guarantee-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .mono-code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--paper);
+    padding: 0.1em 0.3em;
+    border: 1px solid var(--rule);
+  }
+</style>

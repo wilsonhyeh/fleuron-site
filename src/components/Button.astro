@@ -1,0 +1,89 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary';
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  id?: string;
+  download?: boolean | string;
+  [key: string]: any;
+}
+
+const {
+  href,
+  variant = 'secondary',
+  type = 'button',
+  class: className = '',
+  id,
+  download,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  type={href ? undefined : type}
+  id={id}
+  download={download}
+  class:list={['btn', `btn-${variant}`, className]}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0;
+    line-height: 1.2;
+    padding: 0.875rem 1.5rem;
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn {
+      transition: none;
+    }
+  }
+
+  .btn-primary {
+    background-color: var(--gold-fill);
+    color: var(--gold-ink);
+    border: 3px solid var(--rule);
+    box-shadow: 6px 6px 0 var(--rule);
+  }
+
+  .btn-primary:hover {
+    text-decoration: none;
+  }
+
+  .btn-primary:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0 0 0 var(--rule);
+  }
+
+  .btn-secondary {
+    background-color: var(--paper);
+    color: var(--ink);
+    border: 2px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+  }
+
+  .btn-secondary:hover {
+    text-decoration: none;
+  }
+
+  .btn-secondary:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--rule);
+  }
+</style>

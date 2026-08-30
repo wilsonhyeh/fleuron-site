@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Gate 1 — Build static site
+        run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Gate 2 — Astro and TypeScript check
+        run: npx astro check
+
+      - name: Gate 3 — Broken links and anchor check
+        run: npm run check:links
+
+      - name: Gate 4 — Unit tests & privacy guard
+        run: npm test
+
+      - name: Gate 5 — WCAG AA computed contrast check
+        run: npm run check:contrast
+
+      - name: Gate 6 — Zero third-party requests check
+        run: npm run check:no-external

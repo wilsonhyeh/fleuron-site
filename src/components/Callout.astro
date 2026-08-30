@@ -1,0 +1,54 @@
+---
+interface Props {
+  title?: string;
+  class?: string;
+}
+
+const { title = 'Stop here if…', class: className = '' } = Astro.props;
+---
+
+<aside class:list={['callout', className]} role="alert">
+  <div class="callout-header">
+    <span class="callout-indicator" aria-hidden="true">■</span>
+    <strong>{title}</strong>
+  </div>
+  <div class="callout-content">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    border: 3px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .callout-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 0.5rem;
+  }
+
+  .callout-indicator {
+    color: var(--ink);
+  }
+
+  .callout-content {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .callout-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

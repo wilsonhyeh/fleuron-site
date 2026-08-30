@@ -1,17 +1,416 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import Frame from '../components/Frame.astro';
+import Rule from '../components/Rule.astro';
+import Mark from '../components/Mark.astro';
+import WindowChrome from '../components/WindowChrome.astro';
+import BoundaryDiagram from '../components/BoundaryDiagram.astro';
+import { Image } from 'astro:assets';
+import transcriptScreen from '../assets/screens/transcript-coding.webp';
+import codebookScreen from '../assets/screens/codebook-panel.webp';
+import exportScreen from '../assets/screens/export-dialog.webp';
+import { fetchLatestRelease } from '../lib/release';
 
+const release = await fetchLatestRelease();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  title="Fleuron"
+  description="Offline-first qualitative analysis software for reflexive thematic analysis. Runs on your computer. Free forever for offline coding."
+  releaseVersion={release.version}
+  releaseDate={release.publishedAt}
+>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Qualitative analysis that lives on your computer.</h1>
+      <p class="hero-lead">
+        Commercial qualitative tools like NVivo, MAXQDA, and Dedoose cost hundreds to thousands per seat per year, and your transcripts live on someone else's server. <Mark>I built Fleuron because I needed neither of those things to be true.</Mark>
+      </p>
+
+      <div class="hero-cta">
+        <div class="cta-buttons" id="download-cta-group">
+          <!-- Server-rendered default: both buttons visible -->
+          <Button
+            href={release.mac.url}
+            variant="primary"
+            class="download-btn btn-mac"
+            id="hero-mac-btn"
+          >
+            Download for macOS <span class="btn-meta">({release.mac.formattedSize})</span>
+          </Button>
+
+          <Button
+            href={release.win.url}
+            variant="primary"
+            class="download-btn btn-win"
+            id="hero-win-btn"
+          >
+            Download for Windows <span class="btn-meta">({release.win.formattedSize})</span>
+          </Button>
+        </div>
+
+        <div class="hero-meta">
+          <span class="mono-meta">Version {release.version} ({release.publishedAt})</span>
+          <span class="meta-sep">·</span>
+          <a href="/download">All downloads & checksums</a>
+          <span class="meta-sep">·</span>
+          <a href="/install">Install guide</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Script for smart platform detection (progressive enhancement) -->
+  <script is:inline>
+    (function() {
+      try {
+        var ua = navigator.userAgent || '';
+        var isMac = /Macintosh|Mac OS X/i.test(ua);
+        var isWin = /Windows/i.test(ua);
+        var macBtn = document.getElementById('hero-mac-btn');
+        var winBtn = document.getElementById('hero-win-btn');
+
+        if (isMac && macBtn && winBtn) {
+          winBtn.classList.remove('btn-primary');
+          winBtn.classList.add('btn-secondary');
+        } else if (isWin && macBtn && winBtn) {
+          macBtn.classList.remove('btn-primary');
+          macBtn.classList.add('btn-secondary');
+          // Reorder so Windows is first
+          var parent = document.getElementById('download-cta-group');
+          if (parent) parent.insertBefore(winBtn, macBtn);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <Rule />
+
+  <!-- Main Interface Screenshot -->
+  <section class="section-screenshot">
+    <WindowChrome title={`Fleuron v${release.version} — Qualitative Workspace`}>
+      <Image
+        src={transcriptScreen}
+        alt="Fleuron transcript view showing a volunteer interview with open coding bubble over text about garden plot rules"
+        width={1440}
+        height={900}
+        loading="eager"
+      />
+    </WindowChrome>
+    <p class="screenshot-caption">
+      Span-level and whole-turn coding in the dark-themed workspace with keyboard navigation and instant code assignment.
+    </p>
+  </section>
+
+  <Rule />
+
+  <!-- Key Features -->
+  <section class="section-features">
+    <h2 class="section-title">Designed for reflexive qualitative analysis</h2>
+    <div class="features-grid">
+      <Frame class="feature-card">
+        <h3 class="feature-title">Span and whole-turn coding</h3>
+        <p class="feature-text">
+          Code precise word spans or entire speaker turns. Assign codes with one keystroke without lifting your hands from the keyboard.
+        </p>
+      </Frame>
+
+      <Frame class="feature-card">
+        <h3 class="feature-title">Living codebook</h3>
+        <p class="feature-text">
+          Organize codes into hierarchies with explicit definitions, inclusion and exclusion criteria, and exemplar quotes directly attached.
+        </p>
+      </Frame>
+
+      <Frame class="feature-card">
+        <h3 class="feature-title">Reflexive memos</h3>
+        <p class="feature-text">
+          Write analytic memos and methodological notes alongside your transcripts. Memos remain private to your local disk and never sync.
+        </p>
+      </Frame>
+
+      <Frame class="feature-card">
+        <h3 class="feature-title">Multi-format import & rich export</h3>
+        <p class="feature-text">
+          Import plain text, Word documents, and timestamped transcripts. Export self-contained HTML reports, formatted PDFs, and CSV matrices.
+        </p>
+      </Frame>
+    </div>
+  </section>
+
+  <Rule />
+
+  <!-- Privacy Boundary -->
+  <section class="section-boundary">
+    <h2 class="section-title">Where your research data lives</h2>
+    <p class="section-lead">
+      Your raw transcript files, verbatim quotes, and personal notes stay on your local disk. Optional cloud sync coordinates study metadata and codebook definitions without transmitting your source transcripts.
+    </p>
+    <BoundaryDiagram />
+    <div class="boundary-link">
+      <a href="/privacy" class="text-link">Read the complete data boundary and permissions disclosure →</a>
+    </div>
+  </section>
+
+  <Rule />
+
+  <!-- Secondary Screenshots -->
+  <section class="section-dual-screens">
+    <div class="screens-grid">
+      <div>
+        <WindowChrome title="Fleuron — Codebook Hierarchy">
+          <Image
+            src={codebookScreen}
+            alt="Fleuron codebook panel showing hierarchical codes and color swatches"
+            width={1440}
+            height={900}
+          />
+        </WindowChrome>
+        <p class="screenshot-caption">Hierarchical codebook with color swatches and code counts.</p>
+      </div>
+
+      <div>
+        <WindowChrome title="Fleuron — Export Dialog">
+          <Image
+            src={exportScreen}
+            alt="Fleuron export dialog with Reflexive Thematic Analysis preset selected"
+            width={1440}
+            height={900}
+          />
+        </WindowChrome>
+        <p class="screenshot-caption">Methodology presets for Reflexive Thematic Analysis and Content Analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  <Rule />
+
+  <!-- What it costs -->
+  <section class="section-pricing">
+    <h2 class="section-title">What it costs</h2>
+    <div class="pricing-card">
+      <p class="pricing-text">
+        Offline coding is free forever. If you collaborate with a research team, cloud sync is optional and free during the beta. Founder pricing will be preserved for everyone who joins during the beta period. Self-hosting your own backend server is always free.
+      </p>
+    </div>
+  </section>
+
+  <Rule />
+
+  <!-- Honest Limits -->
+  <section class="section-limits">
+    <h2 class="section-title">Honest limits</h2>
+    <div class="limits-grid">
+      <div class="limit-item">
+        <h3 class="limit-title">Unsigned installers</h3>
+        <p class="limit-text">
+          Fleuron is independent open-source software. It does not carry expensive corporate certificates, so macOS and Windows will show an unidentified developer warning on first launch.
+        </p>
+      </div>
+
+      <div class="limit-item">
+        <h3 class="limit-title">Operating systems</h3>
+        <p class="limit-text">
+          Available for macOS (Intel and Apple Silicon universal build) and Windows 10/11 (x64). Linux packages are not currently built.
+        </p>
+      </div>
+
+      <div class="limit-item">
+        <h3 class="limit-title">Single maintainer</h3>
+        <p class="limit-text">
+          Fleuron is built and maintained by one researcher who uses it for qualitative work.
+        </p>
+      </div>
+
+      <div class="limit-item">
+        <h3 class="limit-title">Issue tracker support</h3>
+        <p class="limit-text">
+          Support is provided exclusively through public GitHub Issues. There is no private email support or chat helpdesk.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-section {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .hero-title {
+    font-size: 2.75rem;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    max-width: 24ch;
+  }
+
+  .hero-lead {
+    font-size: 1.375rem;
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: var(--measure);
+    margin-bottom: 2.25rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-meta {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-left: 0.35rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .mono-meta {
+    color: var(--muted);
+  }
+
+  .meta-sep {
+    color: var(--muted);
+  }
+
+  .hero-meta a {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .section-screenshot {
+    margin: 1rem 0;
+  }
+
+  .screenshot-caption {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-top: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-lead {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    max-width: var(--measure);
+    margin-bottom: 1.5rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .feature-text {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .boundary-link {
+    margin-top: 1rem;
+  }
+
+  .text-link {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .screens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .pricing-card {
+    border: 2px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+    padding: 1.75rem 2rem;
+    max-width: var(--measure);
+  }
+
+  .pricing-text {
+    font-size: 1.25rem;
+    line-height: 1.55;
+  }
+
+  .limits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.75rem;
+  }
+
+  .limit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .limit-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+  }
+
+  .limit-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.125rem;
+    }
+    .hero-lead {
+      font-size: 1.1875rem;
+    }
+  }
+</style>

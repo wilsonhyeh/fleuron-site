@@ -1,0 +1,198 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Rule from '../components/Rule.astro';
+import { fetchInstallingDoc } from '../lib/install-doc';
+import { fetchLatestRelease } from '../lib/release';
+
+const doc = await fetchInstallingDoc();
+const release = await fetchLatestRelease();
+---
+
+<Layout
+  title="Installing Fleuron"
+  description="Step-by-step installation instructions for Fleuron on macOS and Windows, including expected publisher warnings and verification."
+  releaseVersion={release.version}
+  releaseDate={release.publishedAt}
+>
+  <article class="install-article">
+    <div class="mirror-meta-top">
+      <span>Official Install Guide</span>
+      <span class="meta-sep">/</span>
+      <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
+        Mirrored from docs/INSTALLING.md ({doc.shortSha})
+      </a>
+    </div>
+
+    <div class="install-content" set:html={doc.html} />
+
+    <Rule />
+
+    <div class="mirror-meta-bottom">
+      <p>
+        Mirrored from <code class="mono-code">docs/INSTALLING.md</code> at commit{' '}
+        <a href={`https://github.com/wilson-taiwan/fleuron/commit/${doc.sha}`} target="_blank" rel="noopener noreferrer">
+          {doc.shortSha}
+        </a>.
+      </p>
+      <p>
+        Need assistance with installation?{' '}
+        <a href="https://github.com/wilson-taiwan/fleuron/issues/new?template=install-help.yml" target="_blank" rel="noopener noreferrer">
+          Open an install-help issue on GitHub →
+        </a>
+      </p>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .install-article {
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  .mirror-meta-top {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .meta-sep {
+    color: var(--muted);
+  }
+
+  .source-link {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  /* Markdown content styling */
+  .install-content :global(h1) {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .install-content :global(h2) {
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 0.35rem;
+  }
+
+  .install-content :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .install-content :global(p) {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .install-content :global(blockquote) {
+    border: 3px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+    padding: 1.25rem 1.5rem;
+    margin: 1.75rem 0;
+  }
+
+  .install-content :global(blockquote p) {
+    margin-bottom: 0.75rem;
+  }
+
+  .install-content :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .install-content :global(ul),
+  .install-content :global(ol) {
+    margin: 1rem 0 1.5rem 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  .install-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .install-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+    margin: 1.75rem 0;
+  }
+
+  .install-content :global(th),
+  .install-content :global(td) {
+    border: 1px solid var(--rule);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .install-content :global(th) {
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  .install-content :global(pre) {
+    border: 2px solid var(--rule);
+    box-shadow: 3px 3px 0 var(--rule);
+    background: var(--paper);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 1.25rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .install-content :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--paper);
+    padding: 0.15em 0.35em;
+    border: 1px solid var(--rule);
+  }
+
+  .install-content :global(pre code) {
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+
+  .mirror-meta-bottom {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mono-code {
+    font-family: var(--font-mono);
+  }
+</style>

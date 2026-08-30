@@ -1,0 +1,18 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<mark class:list={['highlight-mark', className]}><slot /></mark>
+
+<style>
+  .highlight-mark {
+    background-color: var(--gold-fill);
+    color: var(--gold-ink);
+    padding: 0.1em 0.25em;
+    font-weight: inherit;
+  }
+</style>

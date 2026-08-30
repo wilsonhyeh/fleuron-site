@@ -1,0 +1,25 @@
+---
+interface Props {
+  as?: string;
+  class?: string;
+  thick?: boolean;
+}
+
+const { as: Tag = 'div', class: className = '', thick = false } = Astro.props;
+---
+
+<Tag class:list={['frame', { 'frame-thick': thick }, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .frame {
+    border: 2px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+    padding: 1.5rem;
+  }
+  .frame-thick {
+    border-width: 3px;
+  }
+</style>

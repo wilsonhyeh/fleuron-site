@@ -1,0 +1,22 @@
+---
+interface Props {
+  thick?: boolean;
+  class?: string;
+}
+
+const { thick = true, class: className = '' } = Astro.props;
+---
+
+<hr class:list={['rule', { 'rule-thick': thick }, className]} />
+
+<style>
+  .rule {
+    border: 0;
+    border-top: 2px solid var(--rule);
+    margin: 2.5rem 0;
+    width: 100%;
+  }
+  .rule-thick {
+    border-top-width: 3px;
+  }
+</style>

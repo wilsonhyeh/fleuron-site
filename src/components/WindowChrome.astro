@@ -1,0 +1,79 @@
+---
+interface Props {
+  title?: string;
+  class?: string;
+}
+
+const { title = 'Fleuron', class: className = '' } = Astro.props;
+---
+
+<div class:list={['window-frame', className]}>
+  <div class="window-titlebar">
+    <div class="window-controls" aria-hidden="true">
+      <span class="control-square"></span>
+      <span class="control-square"></span>
+      <span class="control-square"></span>
+    </div>
+    <div class="window-title">{title}</div>
+    <div class="window-spacer" aria-hidden="true"></div>
+  </div>
+  <div class="window-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .window-frame {
+    border: 3px solid var(--rule);
+    box-shadow: 4px 4px 0 var(--rule);
+    background: var(--paper);
+    overflow: hidden;
+  }
+
+  .window-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .window-controls {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .control-square {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .window-title {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    text-align: center;
+    flex-grow: 1;
+  }
+
+  .window-spacer {
+    width: 42px;
+  }
+
+  .window-body {
+    background: var(--paper);
+    display: block;
+    line-height: 0;
+  }
+
+  .window-body :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

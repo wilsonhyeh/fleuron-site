@@ -1,0 +1,274 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Frame from '../components/Frame.astro';
+import Rule from '../components/Rule.astro';
+import Callout from '../components/Callout.astro';
+import { fetchLatestRelease } from '../lib/release';
+
+const release = await fetchLatestRelease();
+---
+
+<Layout
+  title="Support"
+  description="Official support channels and diagnostic reporting for Fleuron. Issues are handled exclusively via GitHub."
+  releaseVersion={release.version}
+  releaseDate={release.publishedAt}
+>
+  <div class="support-page">
+    <header class="page-header">
+      <h1 class="page-title">Support</h1>
+      <p class="page-lead">
+        Fleuron is maintained by one person. Support runs entirely through GitHub Issues — there is no email support and no live chat.
+      </p>
+    </header>
+
+    <Rule />
+
+    <!-- Guided Issue Forms -->
+    <section class="support-section">
+      <h2 class="section-title">Install help or bug reports</h2>
+      <p class="section-text">
+        Please use the guided issue templates on GitHub to report problems:
+      </p>
+
+      <div class="issue-cards">
+        <Frame class="issue-card">
+          <h3 class="issue-title">Installation assistance</h3>
+          <p class="issue-desc">
+            Help with operating system warnings, Gatekeeper prompts, SmartScreen alerts, or permissions issues.
+          </p>
+          <a
+            href="https://github.com/wilson-taiwan/fleuron/issues/new?template=install-help.yml"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="issue-btn"
+          >
+            Open install-help issue →
+          </a>
+        </Frame>
+
+        <Frame class="issue-card">
+          <h3 class="issue-title">Bug report</h3>
+          <p class="issue-desc">
+            Report unexpected behavior, crashes, data discrepancies, or user interface regressions.
+          </p>
+          <a
+            href="https://github.com/wilson-taiwan/fleuron/issues/new?template=bug-report.yml"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="issue-btn"
+          >
+            Open bug-report issue →
+          </a>
+        </Frame>
+      </div>
+    </section>
+
+    <!-- Safe Diagnostic Paths -->
+    <section class="diagnostic-section">
+      <h2 class="section-title">Generating diagnostic reports safely</h2>
+      <p class="section-text">
+        To help diagnose issues without exposing research participants or sensitive transcripts, use these two safe paths:
+      </p>
+
+      <div class="diag-methods">
+        <div class="diag-method">
+          <h3 class="method-title">1. When Fleuron opens (In-App)</h3>
+          <p class="method-desc">
+            Go to <strong>About → Generate diagnostic report</strong>. This generates an allowlist-redacted summary of your installation, storage, and sync state. You can review the plain text in the app before copying or saving it.
+          </p>
+        </div>
+
+        <div class="diag-method">
+          <h3 class="method-title">2. When Fleuron will not start (External Probe)</h3>
+          <p class="method-desc">
+            Run the standalone read-only diagnostic probe from the <code class="mono-code">support/</code> directory in the repository:
+          </p>
+          <pre class="code-block"><code># macOS:
+bash support/fleuron-probe.sh --output fleuron-diag.txt
+
+# Windows:
+powershell -NoProfile -File support\Get-FleuronProbe.ps1 -OutputFilePath fleuron-diag.txt</code></pre>
+          <p class="method-desc">
+            Both probe scripts are strictly read-only and never alter system or study files.
+          </p>
+        </div>
+      </div>
+
+      <Callout title="Before attaching anything to an issue">
+        <p>
+          <strong>Do not upload sensitive data:</strong> Never attach transcripts, verbatim quotes, participant/study identifiers, project database files (<code class="mono-code">project.db</code>), auth tokens, or private URLs.
+        </p>
+        <p>
+          Crash logs may contain local file paths — review and redact them before posting.
+        </p>
+      </Callout>
+    </section>
+
+    <Rule />
+
+    <!-- Security & IT -->
+    <section class="security-section">
+      <h2 class="section-title">Security & institutional IT</h2>
+      <div class="sec-grid">
+        <div>
+          <h3 class="sec-subtitle">Security vulnerabilities</h3>
+          <p class="sec-text">
+            Report security vulnerabilities privately through GitHub's security advisories tab at{' '}
+            <a href="https://github.com/wilson-taiwan/fleuron/security" target="_blank" rel="noopener noreferrer">
+              github.com/wilson-taiwan/fleuron/security
+            </a>. Do not open public issues for security vulnerabilities.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="sec-subtitle">Institutional IT & managed devices</h3>
+          <p class="sec-text">
+            For campus IT deployment, AppLocker policies, and group management, refer to the{' '}
+            <a href="https://github.com/wilson-taiwan/fleuron/blob/main/docs/IT-DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">
+              IT Deployment Guide (docs/IT-DEPLOYMENT.md)
+            </a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .support-page {
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-lead {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .section-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .issue-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .issue-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .issue-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .issue-desc {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .issue-btn {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    border: 2px solid var(--rule);
+    padding: 0.5rem 0.875rem;
+    text-decoration: none;
+    box-shadow: 2px 2px 0 var(--rule);
+    background: var(--paper);
+  }
+
+  .issue-btn:hover {
+    text-decoration: none;
+  }
+
+  .issue-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--rule);
+  }
+
+  .diag-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .method-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .method-desc {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+  }
+
+  .code-block {
+    border: 2px solid var(--rule);
+    box-shadow: 3px 3px 0 var(--rule);
+    background: var(--paper);
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0.75rem 0;
+  }
+
+  .mono-code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--paper);
+    padding: 0.1em 0.3em;
+    border: 1px solid var(--rule);
+  }
+
+  .sec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .sec-subtitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .sec-text {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+</style>
