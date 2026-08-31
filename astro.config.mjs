@@ -5,5 +5,5 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://fleuron.study',
   output: 'static',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
 });

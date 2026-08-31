@@ -1,0 +1,7 @@
+# Preview builds only. Production apex must remain indexable.
+https://:version.fleuron-site.pages.dev/*
+  X-Robots-Tag: noindex
+
+# Downloadable HTML examples are artifacts, not search landing pages.
+/examples/*
+  X-Robots-Tag: noindex

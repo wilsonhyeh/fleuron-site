@@ -19,6 +19,7 @@ const SKIP_EXTENSIONS = new Set([
   '.ico',
   '.icns',
   '.pdf',
+  '.docx',
   '.woff',
   '.woff2',
   '.ttf',
@@ -59,26 +60,32 @@ const FORBIDDEN: { pattern: RegExp; why: string }[] = [
   },
 ];
 
-function allTrackedFiles(): string[] {
-  return execFileSync('git', ['ls-files', '-z'], { cwd: ROOT, encoding: 'utf8' })
-    .split('\0')
+function allCandidateFiles(): string[] {
+  return [...new Set(execFileSync('git', ['ls-files', '-co', '--exclude-standard', '-z'], { cwd: ROOT, encoding: 'utf8' }).split('\0'))]
     .filter(Boolean)
     .filter((f) => f !== SELF)
     .filter((f) => !SKIP_FILES.has(f));
 }
 
-function trackedTextFiles(): string[] {
-  return allTrackedFiles().filter((f) => !SKIP_EXTENSIONS.has(path.extname(f).toLowerCase()));
+function candidateTextFiles(): string[] {
+  return allCandidateFiles().filter((f) => !SKIP_EXTENSIONS.has(path.extname(f).toLowerCase()));
 }
 
 describe('repo-wide privacy guard', () => {
-  it('finds files to scan at all', () => {
-    expect(trackedTextFiles().length).toBeGreaterThan(10);
+  it('includes new untracked files without requiring staging', () => {
+    const fixture = '.privacy-guard-untracked-fixture.txt';
+    fs.writeFileSync(path.join(ROOT, fixture), 'Synthetic guard fixture', { flag: 'wx' });
+    try { expect(allCandidateFiles()).toContain(fixture); }
+    finally { fs.unlinkSync(path.join(ROOT, fixture)); }
   });
 
-  it('no tracked file names the maintainer or the originating study', () => {
+  it('finds files to scan at all', () => {
+    expect(candidateTextFiles().length).toBeGreaterThan(10);
+  });
+
+  it('no tracked or untracked candidate file names the maintainer or the originating study', () => {
     const hits: string[] = [];
-    for (const file of trackedTextFiles()) {
+    for (const file of candidateTextFiles()) {
       const full = path.join(ROOT, file);
       let content: string;
       try {
@@ -95,14 +102,14 @@ describe('repo-wide privacy guard', () => {
         }
       }
     }
-    expect(hits, `forbidden identifiers in tracked files:\n${hits.join('\n')}`).toEqual([]);
+    expect(hits, `forbidden identifiers in candidate files:\n${hits.join('\n')}`).toEqual([]);
   });
 
   it('scans all image filenames and alt attributes in src/ for leaks', () => {
     const hits: string[] = [];
 
     // 1. Scan image filenames
-    for (const file of allTrackedFiles()) {
+    for (const file of allCandidateFiles()) {
       const ext = path.extname(file).toLowerCase();
       if (['.png', '.jpg', '.jpeg', '.webp', '.svg'].includes(ext)) {
         for (const { pattern, why } of FORBIDDEN) {
@@ -114,7 +121,7 @@ describe('repo-wide privacy guard', () => {
     }
 
     // 2. Scan all alt attributes in src/
-    for (const file of trackedTextFiles()) {
+    for (const file of candidateTextFiles()) {
       if (!file.startsWith('src/')) continue;
       const full = path.join(ROOT, file);
       let content: string;

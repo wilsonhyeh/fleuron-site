@@ -1,114 +1,71 @@
-# Deployment Runbook: fleuron.study
+# Maintaining fleuron.study
 
-Step-by-step instructions for deploying `fleuron.study` to Cloudflare Pages and connecting Porkbun DNS.
+The existing site is `wilson-taiwan/fleuron-site`, Cloudflare Pages project `fleuron-site`, production branch `main`. The app source is `wilson-taiwan/fleuron`; app installers remain GitHub release assets. DNS stays at Porkbun. This runbook does not authorize publication or account changes.
 
----
+Do not recreate either repository or Pages project, add remotes, move nameservers, or replace the DNS zone. Never modify mail, MX, SPF, DKIM, DMARC or existing verification records. This project currently uses Direct Upload; a GitHub push runs CI but does not publish the site.
 
-## 1. Push site repository to GitHub
+## Before publication
 
-Create the public repository `wilson-taiwan/fleuron-site` on GitHub:
+1. Review the exact diff and untracked files in both checkouts. Preserve unrelated work. Record the current production deployment ID, commit and prior build settings privately as the rollback destination; do not put account IDs, DNS exports, credentials or deploy-hook URLs in this repository.
+2. Use Node 22.12 or newer, matching `package.json`. Install with `npm ci`. For the full local/CI gate, install Chromium with `npx playwright install chromium` (CI uses `--with-deps`).
+3. Run `npm run verify` in this repository. It builds, checks Astro/TypeScript, internal links, unit/privacy regressions, external asset references, SEO structure, sample integrity, computed contrast and browser behavior. A new contributor also reviews examples visually. Do not describe this as a security certification.
+4. For the accompanying app-copy changes, run `npx tsc --noEmit`, `npm test`, and `npm run build` in the app checkout. These changes do not alter sync/auth/billing behavior or release a new installer. Installed v2.1.0 binaries retain their existing in-app wording until a separately approved app release.
+5. Record the resolved release version and mirrored `docs/INSTALLING.md` source-file SHA shown by the build. That SHA identifies a Git blob, not a commit. The mirror follows published app `main`, not uncommitted files in a sibling checkout. Publish approved app documentation before the site build that depends on it, then rebuild and review the mirror.
+6. Request approval for the concrete site/app-source publication batch, GitHub settings, and host changes separately from outreach. No public listing or message is included implicitly.
 
-```bash
-# In ~/Developer/fleuron-site
-gh repo create wilson-taiwan/fleuron-site --public --source=. --remote=origin --push
+## Existing build configuration
+
+The live Pages API was checked on 2026-08-30: this project has no Git source or hosted build command and uses Direct Upload. Build locally with Node 22.12+ and `npm run verify`, then upload the reviewed `dist` to the existing project. Keep production branch `main`. CI also runs `npm run verify` with Chromium. Do not invent a hosted build setting or recreate the project to add Git integration. See [Cloudflare Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
+
+Preserve the existing app release-published hook and `.github/workflows/scheduled-rebuild.yml` weekly hook trigger. Their presence does not prove automatic rebuilds work: no Git build source is configured on this project. Automatic rebuild/deploy wiring needs separate repair with an appropriate deployment credential; until verified, rebuild and publish manually after app releases. Do not create another schedule. Secret hook URLs stay in secret storage. The release fetcher still rejects draft/prerelease results; do not weaken it to make a build pass.
+
+Builds fetch the current public release and installation document. A later local or CI build can consume different upstream content. Compare the published version/file SHA with the reviewed local build and rerun review if either changed. A successful build alone is not evidence that new upstream copy was reviewed.
+
+## Publication order
+
+1. Publish only the approved app-source documentation/copy changes, using the repository's normal review process. Do not tag, bump versions, sign or release binaries.
+2. Rebuild the website against the published document. Review all nine registry pages and the sample artifacts. Rerun the gates. If release/docs differ from the review package, inspect the difference before continuing.
+3. Commit and push the approved site changes, preserving existing commits. After CI succeeds, deploy the already verified build using `npx wrangler pages deploy dist --project-name fleuron-site --branch main` from the clean site checkout. Use the existing authenticated Wrangler profile. Do not create a project or deploy an unreviewed rebuild. Record the returned deployment URL/ID and source commit.
+4. Check the apex before touching other hosts:
+
+```sh
+node scripts/check-deployed.mjs --base https://fleuron.study
 ```
 
----
+The nine final HTML URLs must return direct 200s, slashless URLs must permanently redirect, and a missing address must return 404. Root `404.html` prevents Pages' SPA fallback. `src/content/site-pages.json` is the shared route/metadata/sitemap/test registry; public example reports are excluded from the sitemap and carry an `/examples/*` noindex response rule.
 
-## 2. Create Cloudflare Pages Project
+## Consolidate duplicate production hosts
 
-1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
-2. Navigate to **Workers & Pages** → **Create application** → **Pages** tab → **Connect to Git**.
-3. Select the repository: `wilson-taiwan/fleuron-site`.
-4. Configure Build settings:
-   - **Framework preset:** `Astro` (or `None`)
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Node.js version:** In **Environment variables (build)**, add `NODE_VERSION` = `22` (or `20`).
-   - *(Optional)* `GITHUB_TOKEN`: Add a GitHub Personal Access Token (read-only / public repo scope) if anonymous GitHub API rate limits ever trip during build. (Not required initially).
-5. Click **Save and Deploy**.
-6. Cloudflare will build the site and assign a deployment subdomain, e.g. `<project-name>.pages.dev`.
+Apply only after the apex is healthy and the exact account/DNS changes are approved.
 
----
+### Production pages.dev
 
-## 3. Set up Deploy Hook in Cloudflare Pages
+In the Cloudflare account's Bulk Redirects, reuse a relevant existing list/rule or create one for **only** `fleuron-site.pages.dev/` to `https://fleuron.study/`, status 301. Enable subpath matching, preserve path suffix and preserve query string; leave include-subdomains disabled. Follow [Cloudflare's Pages custom-domain redirect procedure](https://developers.cloudflare.com/pages/how-to/redirect-to-custom-domain/). Do not use a wildcard that redirects deployment previews. `_redirects` does not support domain-level redirects; see [Pages redirects](https://developers.cloudflare.com/pages/configuration/redirects/).
 
-To enable automatic rebuilds when Fleuron releases are published on GitHub:
+### www at Porkbun
 
-1. In Cloudflare Pages, go to your project → **Settings** → **Builds & deployments**.
-2. Scroll to **Deploy hooks** and click **Add deploy hook**.
-3. Name: `fleuron-release-published`, Branch: `main`.
-4. Copy the generated webhook URL: `https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/...`
-5. Go to the app repository on GitHub: [github.com/wilson-taiwan/fleuron/settings/secrets/actions](https://github.com/wilson-taiwan/fleuron/settings/secrets/actions).
-6. Click **New repository secret**:
-   - **Name:** `CLOUDFLARE_PAGES_DEPLOY_HOOK`
-   - **Secret:** *(Paste the deploy hook URL)*
-7. Click **Add secret**.
+Record only the current www CNAME and TTL needed for rollback. In Porkbun URL forwarding, set the subdomain to `www`, destination `https://fleuron.study`, permanent 301, requested URI path included, wildcard forwarding disabled. Remove/replace only the conflicting www record if required. Leave the apex ALIAS untouched. Keep the Pages www custom-domain association while verifying, so DNS rollback remains quick.
 
-*(Note: The app repo's `.github/workflows/notify-site.yml` will now trigger this hook automatically whenever a GitHub release is published).*
+[Porkbun's forwarding instructions](https://kb.porkbun.com/article/39-how-to-set-up-url-forwarding) describe the available controls and HTTPS forwarding. Verify real behavior instead of assuming the form guarantees it. If www HTTPS, path or query preservation fails, remove only the new forward and restore the former www CNAME/TTL. Do not migrate nameservers or add a Worker as an improvised fallback.
 
----
+### Check every host
 
-## 4. Connect Custom Domain in Cloudflare Pages
-
-1. In Cloudflare Pages project → **Custom domains** tab.
-2. Click **Set up a custom domain**.
-3. Enter `fleuron.study` and follow prompts.
-4. Click **Set up a custom domain** again and add `www.fleuron.study`.
-
----
-
-## 5. Configure DNS at Porkbun
-
-Log in to [Porkbun Domain Management](https://porkbun.com/account/domains) → `fleuron.study` → **DNS Records**.
-
-### Required DNS Records:
-
-| Type | Host | Answer / Value | TTL | Notes |
-| --- | --- | --- | --- | --- |
-| `ALIAS` | *(leave blank / @)* | `<project-name>.pages.dev` | 600 | Porkbun ALIAS dynamically resolves to Cloudflare IPs at root |
-| `CNAME` | `www` | `<project-name>.pages.dev` | 600 | CNAME for www subdomain |
-
-> **Verification of Porkbun Apex ALIAS:** Porkbun DNS documentation explicitly supports ALIAS at the root domain (`@`), dynamically resolving CNAME flattening to A records. If using Porkbun URL forwarding instead, CNAME `www` to Pages and set a 301 URL forward from apex `fleuron.study` to `https://www.fleuron.study`.
-
-### ⚠️ Critical Note on `mail.fleuron.study`:
-**DO NOT delete or modify DNS records for `mail.fleuron.study` or Resend/Supabase custom SMTP.**
-The password-reset mail infrastructure on `mail.fleuron.study` is independent and must coexist peacefully in the DNS zone. Adding the apex (`@`) and `www` records does not interfere with `mail.fleuron.study`.
-
----
-
-## 6. Merge App Repo Documentation Branch
-
-In `~/Developer/codemap`:
-
-```bash
-# Verify branch commits
-git log -n 2
-
-# Push branch and merge into main
-git push origin site/official-urls
-# Open PR or merge site/official-urls into main on wilson-taiwan/fleuron
+```sh
+node scripts/check-deployed.mjs --base https://fleuron.study --production-hosts
 ```
 
----
+This bounded read-only GET check tests HTTP apex, HTTP/HTTPS www and HTTPS production pages.dev using `/download/?audit=1`. Each must finish at `https://fleuron.study/download/?audit=1` through permanent redirects without a loop.
 
-## 7. Verification after Cutover
+Also inspect one current preview URL obtained from Pages (do not invent its deployment hostname): it remains usable and has `X-Robots-Tag: noindex`. The `_headers` preview rule is hostname-specific. Confirm the apex has no noindex header or meta tag. Check a public example response for its intended noindex header. Compare mail DNS records with the pre-change evidence; they must be unchanged. Preview headers, DNS and Search Console are not simulated by the local test server.
 
-Once DNS propagates (usually 2–10 minutes):
+NEL/Report-To header presence is recorded by the script. NEL remains enabled and disclosed; this is not an external-request failure. Static scanning only checks asset references; browser tests check page-initiated resources and do not claim to observe all browser-managed reporting.
 
-1. **Test Apex Domain:**
-   ```bash
-   curl -sI https://fleuron.study | head -n 10
-   ```
-   Confirm HTTP 200 (or 301 to https/www) over valid TLS certificate without redirect loops.
+## Rollback
 
-2. **Test WWW Domain:**
-   ```bash
-   curl -sI https://www.fleuron.study | head -n 10
-   ```
+If the apex deployment is broken, select the recorded prior Pages production deployment or create a normal reviewed revert of only this batch. Preserve later/unrelated work. Restore prior build settings if this batch's setting change is responsible.
 
-3. **Verify Download Links:**
-   Visit `https://fleuron.study/download` in browser. Click both download buttons and verify they start direct downloads from `https://github.com/wilson-taiwan/fleuron/releases/download/...`.
+If host consolidation fails, restore www's recorded CNAME/TTL and remove this batch's forwarding entry. Disable only the changed/new Bulk Redirect rule as necessary. Do not reset branch history, delete the Pages project, reset DNS or touch mail records. Recheck HTTPS, page availability and downloads after rollback. Record what remains unresolved.
 
-4. **Verify Mirrored Install Page:**
-   Visit `https://fleuron.study/install`. Confirm all 11 sections render and the commit SHA matches GitHub.
+## Release record
+
+Keep a private record of authorization scope, source commits, deployment ID, resolved release/docs SHA, executed commands/results, host/preview checks, mail preservation and rollback destination. Never record tokens or raw credential-bearing responses. Only then proceed to [search verification and maintenance](docs/SEARCH-MAINTENANCE.md).

@@ -18,6 +18,10 @@ const MIME_TYPES = {
   '.woff2': 'font/woff2',
   '.xml': 'application/xml; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
+  '.pdf': 'application/pdf',
+  '.csv': 'text/csv; charset=utf-8',
+  '.vtt': 'text/vtt; charset=utf-8',
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 };
 
 const server = http.createServer((req, res) => {
@@ -25,17 +29,19 @@ const server = http.createServer((req, res) => {
     const parsedUrl = new URL(req.url || '/', `http://localhost:${PORT}`);
     let pathname = decodeURIComponent(parsedUrl.pathname);
 
-    let filePath = path.join(DIST_DIR, pathname);
+    let filePath = path.resolve(DIST_DIR, '.' + pathname);
+    if (!filePath.startsWith(DIST_DIR + path.sep) && filePath !== DIST_DIR) { res.writeHead(400); res.end(); return; }
 
     if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      if (!pathname.endsWith('/')) { res.writeHead(308, { Location: pathname + '/' + parsedUrl.search }); res.end(); return; }
       filePath = path.join(filePath, 'index.html');
     } else if (!fs.existsSync(filePath) && fs.existsSync(`${filePath}.html`)) {
       filePath = `${filePath}.html`;
     }
 
     if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not Found');
+      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(fs.readFileSync(path.join(DIST_DIR, '404.html')));
       return;
     }
 

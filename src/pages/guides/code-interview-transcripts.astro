@@ -1,0 +1,46 @@
+---
+import GuideLayout from '../../components/GuideLayout.astro';
+import { siteFacts } from '../../content/site-facts';
+const root = '/examples/community-garden/';
+---
+<GuideLayout heading="How to code interview transcripts in Fleuron" lead="Practice importing an interview, coding a passage, revising an interpretation and exporting your work. No account or real participant data is needed." sources={[{ label: 'Fleuron user guide', url: 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/USER-GUIDE.md' }, { label: 'Platform support policy', url: siteFacts.sources.platforms }]}>
+  <p class="note">All interview text and analysis below are fictional demonstration material under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0-1.0</a>. The coding choices illustrate a workflow, not findings about gardeners or a model answer.</p>
+  <h2>1. Download the practice interviews</h2>
+  <p>Each file format contains the same six turns. Choose one format for each interview; importing all three creates duplicates. The timestamps in the WebVTT files are invented.</p>
+  <ul>{['01', '02'].map(id => <li>Interview {id}: <a download href={`${root}interview-${id}.txt`}>plain text</a> · <a download href={`${root}interview-${id}.vtt`}>WebVTT</a> · <a download href={`${root}interview-${id}.docx`}>Word .docx</a></li>)}</ul>
+  <p><a href={`${root}README.txt`}>Corpus and license notes</a></p>
+  <h2>2. Create a separate practice study</h2>
+  <p><a href="/download/">Download Fleuron</a> and follow the <a href="/install/">installation guide</a>, including its warnings that mean stop. {siteFacts.platforms}</p>
+  <p>Create a new local study called <strong>Community garden practice</strong>, with <strong>Practice coder</strong> as the coder. Choose a separate folder for this exercise. Do not open, reset or reuse an existing research study. Leave collaboration off.</p>
+  <p>Import interview-01, then interview-02, and give them the labels <strong>Volunteer A</strong> and <strong>Volunteer B</strong>. Check that interviewer and volunteer turns remain separate and that the text matches the supplied file. A successful import is worth checking before any coding.</p>
+  <h2>3. Code one phrase and one whole turn</h2>
+  <p>In Volunteer A’s first answer, select this exact phrase:</p>
+  <blockquote><p>Now I stay to help the next person get started.</p></blockquote>
+  <p>Use the coding bubble to create and apply <strong>Helping newcomers</strong>. This preserves the selected phrase as a coded span. Then select the entire answer about watering a neighbor’s plot and apply a second code, <strong>Rules and care</strong>, to that whole turn. Inspect both coded extracts to confirm their boundaries.</p>
+  <p>The code names describe your current reading. You can apply more than one code to a passage; the software does not determine which interpretation is right.</p>
+  <h2>4. Revise a code as you read further</h2>
+  <p>Read the rest of both interviews. Volunteer A worries about being welcome if they stop helping; Volunteer B wants a quiet week without explanation. Rename <strong>Helping newcomers</strong> to <strong>Belonging through helping</strong> and add an optional definition: <em>Helping as a way to become or remain part of the garden.</em> Revisit the earlier extract after renaming.</p>
+  <p>This is a revision to try, not a required conclusion. A different research question could make obligation, reciprocity or access more useful starting points. Keep notes about why you changed your interpretation.</p>
+  <figure>
+    <img src={`${root}coding-workspace.webp`} width="1600" height="1014" loading="lazy" alt="Fleuron practice study showing the renamed Belonging through helping code on one phrase and Rules and care on a whole interview turn." style="width:100%;height:auto;border-radius:8px" />
+    <figcaption>The synthetic practice study in a native development build. The codebook and highlighted passages reflect the steps above.</figcaption>
+  </figure>
+  <h2>5. Write a memo and retrieve the evidence</h2>
+  <p>Add a coding memo to the selected phrase:</p>
+  <blockquote><p>I first read helping as enjoyment. The later concern about being welcome suggests belonging may feel conditional. I need to compare this with the request for a quiet week.</p></blockquote>
+  <p>Write a broader interview memo about that uncertainty. Open the code’s associated passages and check each extract against the surrounding transcript. A short quote in a list loses context; return to the full interview before treating it as evidence.</p>
+  <h2>6. Export and inspect</h2>
+  <p>Open Export and choose the <strong>Reflexive thematic analysis</strong> preset. Keep HTML report, PDF report, coded segments, codebook and memos selected. Code-frequency tables are omitted by default; overview and extract totals still appear. Choose a new output folder for the practice study.</p>
+  <p>Open the HTML and PDF. Check the phrase boundary, renamed code, memo and coder label. Open the coded-segments CSV in a spreadsheet or text editor and compare its quoted text with the source. Make these checks on your own exports too.</p>
+  <ul>
+    <li><a href={`${root}report.html`}>Example HTML report</a></li>
+    <li><a href={`${root}report.pdf`}>Example PDF report</a></li>
+    <li><a download href={`${root}coded-segments.csv`}>Example coded-segments CSV</a></li>
+    <li><a href={`${root}manifest.json`}>File sizes, SHA-256 hashes and export provenance</a></li>
+  </ul>
+  <p>The example outputs are generated through Fleuron’s native development build. Their manifest identifies the tested source version; they are not a claim that every distributed installer or supported OS was tested.</p>
+  <h2>Before using your own interviews</h2>
+  <p>{siteFacts.privacy}</p>
+  <p>{siteFacts.network}</p>
+  <p>Continue with the <a href="/guides/reflexive-thematic-analysis/">reflexive thematic analysis workflow</a>. If you need to code audio or video directly rather than its transcript, <a href="/compare/free-qualitative-analysis-software/">compare the other tools</a>.</p>
+</GuideLayout>

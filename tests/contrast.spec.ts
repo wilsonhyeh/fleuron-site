@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const PAGES = ['/', '/download', '/install', '/privacy', '/support'];
+import { sitePages } from '../src/content/site-pages';
+const PAGES = sitePages.map(page => page.path);
 const THEMES = ['light', 'dark'] as const;
 
 test.describe('WCAG AA Contrast Audit', () => {
@@ -11,6 +12,7 @@ test.describe('WCAG AA Contrast Audit', () => {
         await page.evaluate((t) => {
           document.documentElement.dataset.theme = t;
         }, theme);
+        await page.locator('details').evaluateAll(nodes => nodes.forEach(node => { (node as HTMLDetailsElement).open = true; }));
         await page.waitForTimeout(200);
 
         const violations = await page.evaluate((currentTheme) => {
@@ -78,7 +80,7 @@ test.describe('WCAG AA Contrast Audit', () => {
 
           const elements = Array.from(
             document.querySelectorAll(
-              'h1, h2, h3, h4, p, a, button, span, strong, em, code, mark, td, th, li, label, figcaption'
+              'h1, h2, h3, h4, p, a, button, span, strong, em, code, mark, td, th, li, label, figcaption, summary, caption'
             )
           );
 

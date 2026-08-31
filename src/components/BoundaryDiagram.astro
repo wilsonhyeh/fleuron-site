@@ -1,153 +1,58 @@
 ---
-interface Props {
-  class?: string;
-  showLink?: boolean;
-}
-
+import { siteFacts } from '../content/site-facts';
+interface Props { class?: string; showLink?: boolean }
 const { class: className = '', showLink = true } = Astro.props;
+const local = ['Transcript files and full text', 'Quote fields and passage text', 'Original filenames and folder paths', 'Analytic and coding memo fields', 'Full project database and backups', 'Interview dates and diagnosis fields'];
+const shared = ['Study and participant labels', 'Code names, hierarchy and colors', 'Definitions, criteria and examples', 'Coded spans: IDs and character offsets', 'Coder names and memberships', 'Content hashes and revision metadata'];
 ---
-
 <figure class:list={['diagram-container', className]}>
-  <svg
-    viewBox="0 0 880 440"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    class="boundary-svg"
-    role="img"
-    aria-labelledby="boundary-diagram-title boundary-diagram-desc"
-  >
-    <title id="boundary-diagram-title">Fleuron Local and Sync Data Boundary</title>
-    <desc id="boundary-diagram-desc">
-      Architectural boundary diagram showing what data stays strictly local on this computer versus what metadata crosses to the optional sync server.
-    </desc>
-
-    <!-- Left Box: This Computer -->
-    <g class="box-local">
-      <!-- Card background & border -->
-      <rect x="20" y="20" width="360" height="400" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
-      <rect x="24" y="24" width="352" height="44" fill="var(--paper)" stroke="var(--rule)" stroke-width="2" />
-      
-      <!-- Title -->
-      <text x="40" y="52" fill="var(--ink)" font-family="var(--font-mono)" font-size="14" font-weight="700" letter-spacing="1">THIS COMPUTER (LOCAL)</text>
-      <text x="40" y="96" fill="var(--muted)" font-family="var(--font-mono)" font-size="12">Never leaves this device</text>
-
-      <!-- Local items list -->
-      <g transform="translate(40, 130)" font-family="var(--font-serif)" font-size="15" fill="var(--ink)">
-        <text x="0" y="0"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Transcript raw files and full text</text>
-        <text x="0" y="32"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Verbatim quotes and passage text</text>
-        <text x="0" y="64"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Original filenames and directory paths</text>
-        <text x="0" y="96"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Analytic memos and coding memos</text>
-        <text x="0" y="128"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Full local database (project.db)</text>
-        <text x="0" y="160"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Interviewer names and diagnosis fields</text>
-        <text x="0" y="192"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Auth refresh tokens and crash logs</text>
-      </g>
-
-      <!-- Bottom badge -->
-      <rect x="40" y="360" width="320" height="36" fill="var(--paper)" stroke="var(--rule)" stroke-width="1.5" />
-      <text x="200" y="383" text-anchor="middle" fill="var(--ink)" font-family="var(--font-mono)" font-size="12" font-weight="600">STAYS ON LOCAL DISK</text>
+  <svg viewBox="0 0 880 360" fill="none" xmlns="http://www.w3.org/2000/svg" class="boundary-svg" role="img" aria-labelledby="boundary-diagram-title boundary-diagram-desc">
+    <title id="boundary-diagram-title">Fleuron collaboration sync boundary</title>
+    <desc id="boundary-diagram-desc">Collaboration sync excludes transcript text, quote fields and memo fields. It shares codebook text and coding metadata. Copied quotes in codebook fields sync as written. Exports and backups may leave the device through sharing or synced folders. Authentication is described below.</desc>
+    <rect x="10" y="10" width="350" height="340" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
+    <rect x="520" y="10" width="350" height="340" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
+    <g font-family="var(--font-mono)" fill="var(--ink)" font-size="13" font-weight="600">
+      <text x="30" y="43">THIS COMPUTER</text>
+      <text x="540" y="43">OPTIONAL SYNC SERVICE</text>
     </g>
-
-    <!-- Center Flow Arrow & Never Crosses Block -->
-    <g class="arrow-group">
-      <!-- Sync Arrow Line -->
-      <line x1="380" y1="70" x2="490" y2="70" stroke="var(--rule)" stroke-width="3" />
-      <polygon points="500,70 486,62 486,78" fill="var(--rule)" />
-      
-      <text x="440" y="52" text-anchor="middle" fill="var(--ink)" font-family="var(--font-mono)" font-size="11" font-weight="600">HTTPS / WSS</text>
-      <text x="440" y="96" text-anchor="middle" fill="var(--muted)" font-family="var(--font-mono)" font-size="10">Encrypted in transit</text>
-
-      <!-- Struck-through Never Crosses Area -->
-      <rect x="395" y="145" width="90" height="235" fill="var(--paper)" stroke="var(--rule)" stroke-width="2" stroke-dasharray="4 4" />
-      <text x="440" y="170" text-anchor="middle" fill="var(--ink)" font-family="var(--font-mono)" font-size="10" font-weight="700">NEVER</text>
-      <text x="440" y="184" text-anchor="middle" fill="var(--ink)" font-family="var(--font-mono)" font-size="10" font-weight="700">CROSSES</text>
-
-      <!-- Struck text indicators -->
-      <g transform="translate(405, 215)" font-family="var(--font-mono)" font-size="10" fill="var(--muted)">
-        <text x="35" y="0" text-anchor="middle">Transcripts</text>
-        <line x1="0" y1="-4" x2="70" y2="-4" stroke="var(--rule)" stroke-width="1.5" />
-        
-        <text x="35" y="32" text-anchor="middle">Quotes</text>
-        <line x1="0" y1="28" x2="70" y2="28" stroke="var(--rule)" stroke-width="1.5" />
-        
-        <text x="35" y="64" text-anchor="middle">Memos</text>
-        <line x1="0" y1="60" x2="70" y2="60" stroke="var(--rule)" stroke-width="1.5" />
-        
-        <text x="35" y="96" text-anchor="middle">Local DB</text>
-        <line x1="0" y1="92" x2="70" y2="92" stroke="var(--rule)" stroke-width="1.5" />
-
-        <text x="35" y="128" text-anchor="middle">Paths</text>
-        <line x1="0" y1="124" x2="70" y2="124" stroke="var(--rule)" stroke-width="1.5" />
-      </g>
+    <g font-family="var(--font-serif)" fill="var(--ink)" font-size="15">
+      <text x="30" y="76">Excluded from collaboration sync</text>
+      <text x="540" y="76">Shared when collaboration is enabled</text>
+      {local.map((item, i) => <text x="30" y={120 + i * 33}>{item}</text>)}
+      {shared.map((item, i) => <text x="540" y={120 + i * 33}>{item}</text>)}
     </g>
-
-    <!-- Right Box: Sync Server -->
-    <g class="box-sync">
-      <!-- Card background & border -->
-      <rect x="500" y="20" width="360" height="400" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
-      <rect x="504" y="24" width="352" height="44" fill="var(--paper)" stroke="var(--rule)" stroke-width="2" />
-      
-      <!-- Title -->
-      <text x="520" y="52" fill="var(--ink)" font-family="var(--font-mono)" font-size="14" font-weight="700" letter-spacing="1">SYNC SERVER (OPTIONAL)</text>
-      <text x="520" y="96" fill="var(--muted)" font-family="var(--font-mono)" font-size="12">Only when collaborating</text>
-
-      <!-- Sync items list -->
-      <g transform="translate(520, 130)" font-family="var(--font-serif)" font-size="15" fill="var(--ink)">
-        <text x="0" y="0"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Account email and auth metadata</text>
-        <text x="0" y="32"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  De-identified study & participant labels</text>
-        <text x="0" y="64"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Codebook structure, hierarchy & colors</text>
-        <text x="0" y="96"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Definitions, criteria & examples</text>
-        <text x="0" y="128"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Coded span character offsets (start/end)</text>
-        <text x="0" y="160"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Coder display names and memberships</text>
-        <text x="0" y="192"><tspan font-family="var(--font-mono)" font-size="13" fill="var(--rule)">■</tspan>  Deterministic content hashes (SHA-256)</text>
-      </g>
-
-      <!-- Bottom badge -->
-      <rect x="520" y="360" width="320" height="36" fill="var(--paper)" stroke="var(--rule)" stroke-width="1.5" />
-      <text x="680" y="383" text-anchor="middle" fill="var(--ink)" font-family="var(--font-mono)" font-size="12" font-weight="600">ENCRYPTED SYNC METADATA</text>
+    <path d="M370 165 H504 M496 157 L504 165 L496 173" stroke="var(--rule)" stroke-width="3" />
+    <g font-family="var(--font-mono)" fill="var(--ink)" font-size="11" text-anchor="middle">
+      <text x="440" y="128">COLLABORATION</text><text x="440" y="144">SYNC</text>
+      <text x="440" y="197">HTTPS / WSS</text><text x="440" y="217">Transport encryption</text>
     </g>
+    <text x="30" y="326" font-family="var(--font-mono)" fill="var(--muted)" font-size="12">A SYNC BOUNDARY, NOT A SHARING LOCK</text>
+    <text x="540" y="326" font-family="var(--font-mono)" fill="var(--muted)" font-size="12">AUTHOR SHARED TEXT DE-IDENTIFIED</text>
   </svg>
-
-  <p class="sr-only">
-    Data boundary explanation: On your computer, all transcript raw files and text, verbatim quotes, filenames, analytic and reflexive memos, and the local SQLite database remain stored locally and are never transmitted. When optional collaboration sync is used, only account email, de-identified study and participant labels, codebook structure and definitions, coded span character offsets, and study membership metadata are synced over encrypted HTTPS/WSS.
-  </p>
-
-  {showLink && (
-    <figcaption class="diagram-caption">
-      <span>Architectural data boundary for reflexive thematic analysis.</span>
-      <a href="https://github.com/wilson-taiwan/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md" target="_blank" rel="noopener noreferrer">
-        Read the complete privacy and permissions disclosure →
-      </a>
-    </figcaption>
-  )}
+  <div class="boundary-mobile">
+    <section><h3>Excluded from collaboration sync</h3><ul>{local.map(item => <li>{item}</li>)}</ul></section>
+    <p class="sync-label">Collaboration sync · HTTPS / WSS</p>
+    <section><h3>Shared when collaboration is enabled</h3><ul>{shared.map(item => <li>{item}</li>)}</ul></section>
+  </div>
+  <figcaption>
+    <p>Codebook text syncs as written, including any copied quotes. Exports and backups can leave your device through sharing or synced folders.</p>
+    <p>{siteFacts.credentials}</p>
+    {showLink && <a href="/privacy/">Read the complete privacy and permissions disclosure →</a>}
+  </figcaption>
 </figure>
-
 <style>
-  .diagram-container {
-    margin: 2rem 0;
-    width: 100%;
-  }
-
-  .boundary-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 880px;
-    margin: 0 auto;
-  }
-
-  .diagram-caption {
-    margin-top: 1rem;
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    color: var(--muted);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-
-  .diagram-caption a {
-    color: var(--ink);
-    text-decoration: underline;
+  .diagram-container { margin: 2rem 0; width: 100%; }
+  .boundary-svg { display: block; width: 100%; height: auto; max-width: 880px; margin: 0 auto; }
+  .boundary-mobile { display: none; }
+  figcaption { margin-top: 1rem; font-size: 1rem; line-height: 1.6; }
+  figcaption p { margin-bottom: 0.75rem; }
+  figcaption a { color: var(--ink); text-decoration: underline; }
+  @media (max-width: 760px) {
+    .boundary-svg { display: none; }
+    .boundary-mobile { display: block; }
+    .boundary-mobile section { border: 2px solid var(--rule); padding: 1rem; }
+    .boundary-mobile h3 { font-size: 1.125rem; margin-bottom: 0.75rem; }
+    .boundary-mobile ul { padding-left: 1.25rem; line-height: 1.6; }
+    .sync-label { font-family: var(--font-mono); font-size: 0.875rem; margin: 1rem 0; }
   }
 </style>

@@ -26,22 +26,7 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Gate 1 — Build static site
-        run: npm run build
+      - name: Verify build, content, examples and browser behavior
+        run: npm run verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Gate 2 — Astro and TypeScript check
-        run: npx astro check
-
-      - name: Gate 3 — Broken links and anchor check
-        run: npm run check:links
-
-      - name: Gate 4 — Unit tests & privacy guard
-        run: npm test
-
-      - name: Gate 5 — WCAG AA computed contrast check
-        run: npm run check:contrast
-
-      - name: Gate 6 — Zero third-party requests check
-        run: npm run check:no-external

@@ -5,13 +5,14 @@ import Rule from '../components/Rule.astro';
 import BoundaryDiagram from '../components/BoundaryDiagram.astro';
 import Callout from '../components/Callout.astro';
 import { fetchLatestRelease } from '../lib/release';
+import { siteFacts } from '../content/site-facts';
 
 const release = await fetchLatestRelease();
 ---
 
 <Layout
   title="Privacy & Data Boundary"
-  description="Exact data boundary disclosure for Fleuron desktop app and fleuron.study website. No analytics, no tracking, zero third-party requests."
+  description="Exact data boundary disclosure for Fleuron desktop app and fleuron.study website. Local data, optional collaboration, update checks and website hosting."
   releaseVersion={release.version}
   releaseDate={release.publishedAt}
 >
@@ -29,11 +30,12 @@ const release = await fetchLatestRelease();
     <section class="section-app-privacy">
       <h2 class="section-title">1. The desktop application</h2>
       <p class="section-text">
-        Fleuron runs locally on your computer. When used offline, zero network requests occur. When you choose to use optional team collaboration features, only metadata crosses to the sync server.
+        {siteFacts.network}
       </p>
 
       <BoundaryDiagram showLink={false} />
 
+      <p class="section-text">{siteFacts.credentials}</p>
       <h3 class="subsection-title">Data boundary field disclosure</h3>
       <div class="table-container">
         <table class="data-table">
@@ -41,14 +43,14 @@ const release = await fetchLatestRelease();
             <tr>
               <th>Category</th>
               <th>Synced when collaboration is active</th>
-              <th>Kept strictly on local disk</th>
+              <th>Excluded from collaboration sync</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Account & Access</strong></td>
               <td>Account email, auth metadata, study membership, coder display name, device sync state</td>
-              <td>Session refresh tokens, local application preferences, working folder paths</td>
+              <td>Stored credential files, local application preferences, working folder paths. Credential values are used with the auth service.</td>
             </tr>
             <tr>
               <td><strong>Study Identity</strong></td>
@@ -77,7 +79,7 @@ const release = await fetchLatestRelease();
       <Callout title="Important research caveats">
         <ul class="caveat-list">
           <li>
-            <strong>De-identification is researcher-owned:</strong> Study/participant labels and codebook definitions sync word-for-word across team members. Write them de-identified from the beginning.
+            <strong>De-identification is researcher-owned:</strong> {siteFacts.privacy}
           </li>
           <li>
             <strong>Transport encryption vs operator access:</strong> HTTPS/WSS encrypts data in transit. This protects against wiretapping, but does not make synced metadata unknowable to the server host.
@@ -104,16 +106,16 @@ const release = await fetchLatestRelease();
     <section class="section-web-privacy">
       <h2 class="section-title">2. This website (fleuron.study)</h2>
       <p class="section-text">
-        The website you are reading right now collects nothing and tracks nothing. It is built as static HTML and hosted on Cloudflare Pages.
+        {siteFacts.website}
       </p>
 
       <Frame class="guarantee-card">
         <ul class="guarantee-list">
           <li><strong>No analytics:</strong> We run no Google Analytics, Plausible, PostHog, or tracking pixels.</li>
-          <li><strong>No cookies:</strong> No cookie banner is needed because no cookies or trackers are set.</li>
+          <li><strong>Theme storage:</strong> The theme toggle stores your choice in browser local storage. We do not add tracking cookies.</li>
           <li><strong>No forms or inputs:</strong> We collect no emails, names, newsletters, or visitor submissions.</li>
-          <li><strong>Zero third-party requests:</strong> All fonts, stylesheets, scripts, and images are self-hosted. Your browser makes zero requests to third-party CDNs.</li>
-          <li><strong>Enforced by build gates:</strong> This claim is not just an intention. Every build must pass an automated CI test (<code class="mono-code">npm run check:no-external</code>) that scans every generated HTML and CSS file and fails if any third-party external request exists.</li>
+          <li><strong>Page assets:</strong> Fonts, styles, scripts and images are served from this domain. Cloudflare can separately receive browser network-error reports. <a href={siteFacts.sources.nel}>Read Cloudflare’s explanation</a>.</li>
+          <li><strong>What checks cover:</strong> Our asset-reference check scans generated HTML and CSS for externally hosted resources. It does not prove the absence of every runtime request or hosting-layer report.</li>
         </ul>
       </Frame>
     </section>

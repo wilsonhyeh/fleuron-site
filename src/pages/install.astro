@@ -19,7 +19,7 @@ const release = await fetchLatestRelease();
       <span>Official Install Guide</span>
       <span class="meta-sep">/</span>
       <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer" class="source-link">
-        Mirrored from docs/INSTALLING.md ({doc.shortSha})
+        Mirrored from docs/INSTALLING.md (source file SHA {doc.shortSha})
       </a>
     </div>
 
@@ -29,8 +29,8 @@ const release = await fetchLatestRelease();
 
     <div class="mirror-meta-bottom">
       <p>
-        Mirrored from <code class="mono-code">docs/INSTALLING.md</code> at commit{' '}
-        <a href={`https://github.com/wilson-taiwan/fleuron/commit/${doc.sha}`} target="_blank" rel="noopener noreferrer">
+        Mirrored from <code class="mono-code">docs/INSTALLING.md</code> with source file SHA{' '}
+        <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer">
           {doc.shortSha}
         </a>.
       </p>
@@ -48,6 +48,8 @@ const release = await fetchLatestRelease();
   .install-article {
     max-width: var(--measure);
     margin: 0 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .mirror-meta-top {
@@ -130,13 +132,21 @@ const release = await fetchLatestRelease();
     margin-bottom: 0.5rem;
   }
 
+  .install-content :global(.table-scroll) {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 1.75rem 0;
+    padding: 0 5px 5px 0;
+  }
+
   .install-content :global(table) {
     width: 100%;
+    min-width: 540px;
     border-collapse: collapse;
     border: 3px solid var(--rule);
     box-shadow: 4px 4px 0 var(--rule);
     background: var(--paper);
-    margin: 1.75rem 0;
+    margin: 0;
   }
 
   .install-content :global(th),

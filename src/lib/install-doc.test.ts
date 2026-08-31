@@ -15,9 +15,22 @@ describe('install-doc transform and link rewriting', () => {
     expect(output).toBe(input);
   });
 
+  it('normalizes official page links while preserving query strings and anchors', () => {
+    expect(rewriteMarkdownLinks('[Help](https://fleuron.study/support?from=install#report)')).toBe('[Help](https://fleuron.study/support/?from=install#report)');
+    expect(rewriteMarkdownLinks('[File](https://fleuron.study/icon.svg)')).toBe('[File](https://fleuron.study/icon.svg)');
+  });
+
   it('throws on unmapped relative link', () => {
     const input = `Check [Mystery](mystery-unmapped-doc.md).`;
     expect(() => rewriteMarkdownLinks(input)).toThrow(/unmapped relative link/);
+  });
+
+  it('keeps mirrored tables semantic inside keyboard-scrollable regions', () => {
+    const result = transformInstallingMarkdown('| Platform | File |\n| --- | --- |\n| macOS | app.dmg |', 'abc1234');
+    expect(result.html).toContain('role="region"');
+    expect(result.html).toContain('tabindex="0"');
+    expect(result.html).toContain('<table>');
+    expect(result.html).toContain('<th>Platform</th>');
   });
 
   it('throws on empty markdown content', () => {

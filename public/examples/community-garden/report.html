@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community garden practice — Qualitative Coding Report</title>
+  <style>
+    :root {
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: "Charter", "Bitstream Charter", "Sitka Text", "Cambria", Georgia, serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --surface-card: #ffffff;
+      --ink-1: #0f172a;
+      --ink-2: #334155;
+      --ink-3: #64748b;
+      --ink-4: #94a3b8;
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --accent: #d97706;
+      --accent-soft: #fef3c7;
+      --accent-ink: #92400e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink-1);
+      background: var(--bg);
+      line-height: 1.5;
+      padding: 40px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Print styling */
+    @media print {
+      body {
+        padding: 0;
+        max-width: 100%;
+        color: #000;
+        background: #fff;
+      }
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+      .no-break {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      .no-print {
+        display: none !important;
+      }
+      thead {
+        display: table-header-group;
+      }
+      tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      .card, .extract-card {
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+
+    header.cover {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink-1);
+      margin-bottom: 12px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .meta-item .label {
+      font-size: 11px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .meta-item .value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-1);
+      margin-top: 2px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink-1);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin: 16px 0 8px 0;
+    }
+
+    .code-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .codebook-tree {
+      list-style: none;
+    }
+
+    .codebook-item {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: var(--surface-card);
+    }
+
+    .codebook-sub-item {
+      margin-left: 24px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--border);
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .code-definition {
+      font-size: 13px;
+      color: var(--ink-2);
+      margin-top: 4px;
+    }
+
+    .code-criteria {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .extract-card {
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-card);
+      margin-bottom: 12px;
+    }
+
+    .extract-quote {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink-1);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .extract-quote mark {
+      background-color: #fef08a;
+      padding: 0 2px;
+      font-weight: 600;
+    }
+
+    .extract-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11.5px;
+      color: var(--ink-3);
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 8px;
+    }
+
+    .extract-memo {
+      margin-top: 8px;
+      padding: 6px 10px;
+      background: #f8fafc;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+      margin-top: 12px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface);
+      font-weight: 600;
+      color: var(--ink-2);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .matrix-table th {
+      min-width: 160px;
+    }
+
+    .matrix-table td {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .matrix-snippet {
+      margin-top: 4px;
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--ink-2);
+      font-size: 11px;
+    }
+
+    .conflict-notice {
+      margin-top: 16px;
+      padding: 10px 12px;
+      border: 1px solid #f59e0b;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent-ink);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover Header -->
+  <header class="cover">
+    <div class="eyebrow">Qualitative Study Report</div>
+    <h1>Community garden practice</h1>
+    <p style="color: var(--ink-2); font-size: 14px;">Methodology: <strong>Reflexive thematic analysis</strong></p>
+    
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="label">Participants</div>
+        <div class="value">2</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Coded Passages</div>
+        <div class="value">2</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Active Codes</div>
+        <div class="value">2</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Memos & Notes</div>
+        <div class="value">2</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Exported By</div>
+        <div class="value">Practice coder</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Export Date</div>
+        <div class="value">2026-08-31</div>
+      </div>
+    </div>
+  </header>
+
+  
+  <!-- Codebook Section -->
+  <section class="page-break">
+    <h2>Codebook Structure &amp; Definitions</h2>
+    <ul class="codebook-tree">
+      
+        <li class="codebook-item no-break">
+          <div class="code-chip">
+            <span class="dot" style="background-color: #8a6410;"></span>
+            Belonging through helping
+          </div>
+          <div class="code-definition">Helping as a way to become or remain part of the garden.</div>
+          
+
+          
+        </li>
+        <li class="codebook-item no-break">
+          <div class="code-chip">
+            <span class="dot" style="background-color: #1f7a5e;"></span>
+            Rules and care
+          </div>
+          
+          
+
+          
+        </li>
+    </ul>
+
+    
+  </section>
+
+  
+
+  
+
+  
+  <!-- Coded Extracts Section -->
+  <section class="page-break">
+    <h2>Illustrative Extracts & Coded Passages</h2>
+    
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin-bottom: 12px;">
+          <span class="code-chip">
+            <span class="dot" style="background-color: #8a6410;"></span>
+            Belonging through helping
+          </span>
+          <span style="font-size: 12px; color: var(--ink-3); font-weight: normal; margin-left: 8px;">
+            (1 passage)
+          </span>
+        </h3>
+
+        
+          <div class="extract-card no-break">
+            <div class="extract-quote">“Now I stay to help the next person get started.”</div>
+            <div class="extract-meta">
+              <div>
+                <strong>Volunteer A</strong>
+                
+              </div>
+              <div style="display: flex; gap: 4px; align-items: center;">
+                
+                  <span class="code-chip" style="font-size: 10.5px;">
+                    <span class="dot" style="background-color: #8a6410; width: 6px; height: 6px;"></span>
+                    Belonging through helping
+                  </span>
+                <span>· Coder: <strong>Practice coder</strong></span>
+              </div>
+            </div>
+            
+              <div class="extract-memo">
+                <strong>Analytic Note:</strong> I first read helping as enjoyment. The later concern about being welcome suggests belonging may feel conditional. I need to compare this with the request for a quiet week.
+              </div>
+          </div>
+      </div>
+      <div style="margin-bottom: 28px;">
+        <h3 style="margin-bottom: 12px;">
+          <span class="code-chip">
+            <span class="dot" style="background-color: #1f7a5e;"></span>
+            Rules and care
+          </span>
+          <span style="font-size: 12px; color: var(--ink-3); font-weight: normal; margin-left: 8px;">
+            (1 passage)
+          </span>
+        </h3>
+
+        
+          <div class="extract-card no-break">
+            <div class="extract-quote">“The rules said to water only our own plots. When my neighbor missed a week, I watered theirs too. I did not want their plants to suffer.”</div>
+            <div class="extract-meta">
+              <div>
+                <strong>Volunteer A</strong>
+                
+              </div>
+              <div style="display: flex; gap: 4px; align-items: center;">
+                
+                  <span class="code-chip" style="font-size: 10.5px;">
+                    <span class="dot" style="background-color: #1f7a5e; width: 6px; height: 6px;"></span>
+                    Rules and care
+                  </span>
+                <span>· Coder: <strong>Practice coder</strong></span>
+              </div>
+            </div>
+            
+          </div>
+      </div>
+  </section>
+
+  
+  <!-- Interview Memos Section -->
+  <section class="page-break">
+    <h2>Participant / Interview Hub Memos</h2>
+    
+      <div class="card no-break" style="padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; background: var(--surface-card);">
+        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">
+          Volunteer A
+          
+        </div>
+        <p style="font-size: 13px; color: var(--ink-2); line-height: 1.5;">Tentative interpretation: belonging has obligations. Compare the wish for a quiet week with the practical support of the watering list. This is a fictional exercise, not a finding.</p>
+      </div>
+  </section>
+
+</body>
+</html>

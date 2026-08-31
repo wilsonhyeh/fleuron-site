@@ -1,4 +1,5 @@
-import { marked } from 'marked';
+import { Marked, Renderer } from 'marked';
+import { sitePages } from '../content/site-pages';
 
 export interface InstallingDocData {
   rawMarkdown: string;
@@ -23,11 +24,29 @@ const KNOWN_LINK_MAPPINGS: Record<string, string> = {
   'support': 'https://github.com/wilson-taiwan/fleuron/tree/main/support',
 };
 
+const renderer = new Renderer();
+const renderTable = renderer.table;
+renderer.table = function (token) {
+  return `<div class="table-scroll" role="region" aria-label="Scrollable installation reference table" tabindex="0">${renderTable.call(this, token)}</div>`;
+};
+const markdownParser = new Marked({ renderer });
+
 export function rewriteMarkdownLinks(markdown: string): string {
   // Regex to match markdown links [text](url)
   return markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
     const trimmedUrl = url.trim();
-    // Ignore absolute URLs, hash anchors, and mailto
+    // The mirrored document may still contain old slashless website links.
+    if (trimmedUrl.startsWith('https://fleuron.study')) {
+      const url = new URL(trimmedUrl);
+      if (url.origin === 'https://fleuron.study') {
+        const normalized = url.pathname === '/' ? '/' : `${url.pathname.replace(/\/+$/, '')}/`;
+        if (sitePages.some(page => page.path === normalized)) {
+          url.pathname = normalized;
+          return `[${text}](${url.href})`;
+        }
+      }
+    }
+    // Ignore other absolute URLs, hash anchors, and mailto
     if (
       trimmedUrl.startsWith('http://') ||
       trimmedUrl.startsWith('https://') ||
@@ -52,7 +71,7 @@ export function transformInstallingMarkdown(markdown: string, sha: string): Inst
   }
 
   const rewritten = rewriteMarkdownLinks(markdown);
-  const html = marked.parse(rewritten, { async: false }) as string;
+  const html = markdownParser.parse(rewritten, { async: false }) as string;
   const shortSha = sha ? sha.slice(0, 7) : 'unknown';
 
   return {

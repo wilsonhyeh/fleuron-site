@@ -1,21 +1,27 @@
 ---
 import '../styles/tokens.css';
+import { pageFor } from '../content/site-pages';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
   releaseVersion?: string;
   releaseDate?: string;
+  noindex?: boolean;
 }
 
 const {
-  title,
+  title = 'Fleuron',
   description = 'Fleuron is an offline-first qualitative analysis app for reflexive thematic analysis. Runs on your computer. Free forever for offline coding.',
   releaseVersion = '2.1.0',
   releaseDate = '2026-08-29',
+  noindex = false,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://fleuron.study');
+const page = pageFor(Astro.url.pathname);
+const pageTitle = page?.title ?? title;
+const pageDescription = page?.description ?? description;
+const canonicalURL = new URL(page?.path ?? Astro.url.pathname, Astro.site || 'https://fleuron.study');
 const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
 ---
 
@@ -30,23 +36,24 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F3EA" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141210" />
-    <link rel="canonical" href={canonicalURL} />
+    {!noindex && <link rel="canonical" href={canonicalURL} />}
+    {noindex && <meta name="robots" content="noindex" />}
 
-    <title>{title === 'Fleuron' ? title : `${title} — Fleuron`}</title>
-    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title === 'Fleuron' ? title : `${title} — Fleuron`} />
-    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonicalURL} />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={ogImageURL} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={title === 'Fleuron' ? title : `${title} — Fleuron`} />
-    <meta name="twitter:description" content={description} />
+    {!noindex && <meta name="twitter:url" content={canonicalURL} />}
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogImageURL} />
 
     <script is:inline>
@@ -69,10 +76,11 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
         </a>
 
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="/download" class="nav-link">Download</a>
-          <a href="/install" class="nav-link">Install</a>
-          <a href="/privacy" class="nav-link">Privacy</a>
-          <a href="/support" class="nav-link">Support</a>
+          <a href="/download/" class="nav-link">Download</a>
+          <a href="/install/" class="nav-link">Install</a>
+          <a href="/guides/" class="nav-link">Guides</a>
+          <a href="/privacy/" class="nav-link">Privacy</a>
+          <a href="/support/" class="nav-link">Support</a>
         </nav>
 
         <button
@@ -179,6 +187,7 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
 
   .nav-links {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 1.5rem;
   }
@@ -262,7 +271,7 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
     .nav-links {
       order: 3;
       width: 100%;
-      gap: 1rem;
+      gap: 0.75rem;
       padding-top: 0.5rem;
       border-top: 1px solid var(--rule);
     }

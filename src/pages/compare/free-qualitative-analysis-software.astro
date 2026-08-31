@@ -1,0 +1,34 @@
+---
+import GuideLayout from '../../components/GuideLayout.astro';
+import { siteFacts } from '../../content/site-facts';
+const taguette = 'https://www.taguette.org/';
+const qual = 'https://github.com/ccbogel/QualCoder/blob/3.8.2/README.md';
+---
+<GuideLayout heading="Compare free qualitative analysis software" lead="Fleuron, Taguette and QualCoder offer different ways to work without a software license fee. Start with the kind of material you need to code and how you need to share it." sources={[{ label: 'Taguette: features', url: `${taguette}about.html` }, { label: 'Taguette: local and hosted installation', url: `${taguette}install.html` }, { label: 'QualCoder 3.8.2 documentation', url: qual }, { label: 'QualCoder releases', url: 'https://github.com/ccbogel/QualCoder/releases' }, { label: 'Fleuron source and documentation', url: siteFacts.sources.repository }]}>
+  <p class="note"><strong>Written by Fleuron’s developer.</strong> This is a maintainer comparison, not an independent review. Competitor details below come from their linked documentation; I have not performed a feature-by-feature test of those tools. The QualCoder column uses the 3.8.2 documentation rather than unreleased development features.</p>
+  <div class="table-scroll" role="region" aria-label="Software comparison" tabindex="0">
+    <table>
+      <caption>Scope and installation, reviewed August 30, 2026</caption>
+      <thead><tr><th scope="col">Question</th><th scope="col">Fleuron</th><th scope="col">Taguette</th><th scope="col">QualCoder</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">License and free use</th><td>MIT; offline coding free forever. Hosted collaboration free during beta, paid plans planned. <a href={siteFacts.sources.license}>License</a></td><td>BSD licensed. Local software and the project’s hosted service are free. <a href={`${taguette}install.html`}>Terms and setup</a></td><td>LGPLv3 software. Optional external AI services can have their own terms and costs. <a href={qual}>License and AI setup</a></td></tr>
+        <tr><th scope="row">Where it runs</th><td>Native desktop: macOS 14+ and Windows 11 x64 supported. Older systems best effort. <a href="/download/">Support limits</a></td><td>Browser interface, either on a local server for offline use or a shared server. macOS, Windows and Linux. <a href={`${taguette}install.html`}>Installation</a></td><td>Desktop application for Windows, macOS and Linux; installation varies by system. <a href={qual}>Platform instructions</a></td></tr>
+        <tr><th scope="row">Material you code</th><td>Text transcripts, including .docx and timestamped text. No direct audio, video or image coding. <a href="/guides/code-interview-transcripts/">Example workflow</a></td><td>Document highlighting/tagging, including PDF, .docx, text and ebook formats. <a href={`${taguette}about.html`}>Supported documents</a></td><td>Text, images, audio and video; media support may need additional software. <a href={qual}>Features and prerequisites</a></td></tr>
+        <tr><th scope="row">Getting work out</th><td>HTML/PDF reports and CSV coded passages/matrices. No native NVivo project import. <a href="/guides/code-interview-transcripts/">Sample exports</a></td><td>Exports projects, highlighted extracts, documents and codes. <a href={`${taguette}about.html`}>Export scope</a></td><td>Reporting and project exchange are documented by the project. Cross-tool round trips were not verified here; test your own files before migrating. <a href="https://qualcoder.org/">Manual</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h2>Collaboration changes the data boundary</h2>
+  <p>Fleuron’s optional service shares codebook text, labels and coding metadata while excluding transcript text and memo fields. Teammates still need their own local transcripts. A quote pasted into a shared definition is shared text. <a href="/privacy/">Read the field-level disclosure</a>.</p>
+  <p>Taguette supports teamwork through a shared server, either its hosted instance or one you operate. Local single-user installation is also available. Choose the location with your document-handling requirements in mind. <a href={`${taguette}install.html`}>Taguette’s installation guide</a>.</p>
+  <p>QualCoder’s documentation includes optional AI integrations. Review the chosen provider and configuration before using those with sensitive material. This comparison does not claim Fleuron-style live metadata sync for QualCoder; that equivalence was not verified. <a href={qual}>QualCoder’s documentation</a>.</p>
+  <h2>“Free” does not remove installation and support work</h2>
+  <p>{siteFacts.pricing} Fleuron’s current installers have publisher-verification limitations, and ordinary support runs through public GitHub issues. <a href="/install/">Read the expected warnings and stop conditions</a>.</p>
+  <p>Check the other tools’ current installation instructions too. A local browser interface can still require a running local service; desktop media work can require extra dependencies. A free trial or a license paid for by your institution is different from freely licensed software. This page does not compare commercial prices.</p>
+  <h2>An NVivo alternative is not a complete replacement</h2>
+  <p>NVivo can store projects locally, as its <a href="https://help-nv.qsrinternational.com/20/win/Content/projects-teamwork/create-a-new-project.htm">project creation guide</a> explains. MAXQDA also recommends <a href="https://help.maxqda.com/en/support/solutions/articles/80001146630-where-should-i-save-the-project-file-">local project storage</a>. Choosing free software does not require claiming those products force your transcripts onto a hosted server.</p>
+  <p>If you already have a project, list the features and formats it depends on. Exported text and CSV are not a promise that code hierarchies, links, annotations and media will transfer without loss. Keep an untouched original and trial a small migration before committing.</p>
+  <h2>Which should you try?</h2>
+  <p><strong>Choose Fleuron when</strong> you want a local transcript-coding workspace with evolving codes and memos, and its current platform and signing limits fit your situation. Start with the <a href="/guides/code-interview-transcripts/">synthetic tutorial</a>.</p>
+  <p><strong>Choose another tool when</strong> your workflow needs different material types, a browser-based shared workspace, Linux packaging or institutional support arrangements. Taguette is worth trying for document tagging; QualCoder is worth trying for direct media coding. These are workflow judgments, not a ranking or a claim of feature parity.</p>
+</GuideLayout>

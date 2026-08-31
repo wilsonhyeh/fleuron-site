@@ -1,0 +1,23 @@
+export const siteFacts = {
+  name: 'Fleuron',
+  url: 'https://fleuron.study/',
+  reviewedOn: '2026-08-30',
+  pricing: 'Offline coding is free forever. Hosted collaboration is optional and free during beta. Paid plans and terms for beta users will be announced before charging begins. There is no Fleuron software fee for self-hosting; you are responsible for infrastructure and administration costs.',
+  pricingShort: 'Offline coding: free forever. Hosted collaboration: free during beta; paid plans planned.',
+  lead: 'Code interviews, organize evolving codes, and write analytic memos on macOS and Windows. Fleuron is free and open source for offline coding. Optional team sync shares codebook and coding information without uploading transcript files or memo fields.',
+  privacy: "Fleuron's collaboration sync excludes transcript text and memo fields. Codebook definitions, examples and study labels sync as written. Keep identifying information out of those fields, including quotes copied from transcripts. Exports and backups are saved where you choose; they may leave your device when you share them or use a synced folder.",
+  network: 'Coding works without an internet connection. Automatic update checks contact GitHub at startup and periodically while the app is open; you can turn them off in Settings. Sign-in, session renewal and collaboration contact the configured service when those features are used.',
+  credentials: 'Stored credential files remain on this computer. Authentication uses credential values with the configured sign-in service.',
+  website: 'We do not add analytics or advertising trackers. Fonts, scripts, styles and images are served from this domain. Cloudflare hosts the site and processes requests; its network error reporting can send browser reports about connection failures. The theme choice is stored locally in your browser. Download and support links take you to GitHub, which operates under its own policies.',
+  platforms: 'Supported: macOS 14+ (Intel and Apple Silicon universal build) and Windows 11 x64. macOS 10.15–13 and Windows 10 are best effort. No Linux or native Windows ARM package is provided.',
+  mac: 'macOS 14+ supported; 10.15–13 best effort',
+  windows: 'Windows 11 x64 supported; Windows 10 best effort',
+  signing: 'Current builds are not Apple-notarized or Windows publisher-signed. See the installation guide for expected warnings and when to stop.',
+  sources: {
+    repository: 'https://github.com/wilson-taiwan/fleuron',
+    license: 'https://github.com/wilson-taiwan/fleuron/blob/main/LICENSE',
+    privacy: 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
+    platforms: 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
+    nel: 'https://developers.cloudflare.com/network-error-logging/',
+  },
+} as const;

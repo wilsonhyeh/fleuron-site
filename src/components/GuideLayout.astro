@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StructuredData from './StructuredData.astro';
+import { pageFor } from '../content/site-pages';
+import { siteFacts } from '../content/site-facts';
+import { fetchLatestRelease } from '../lib/release';
+interface Props {
+  heading: string;
+  lead: string;
+  sources?: { label: string; url: string }[];
+}
+const { heading, lead, sources = [] } = Astro.props;
+const page = pageFor(Astro.url.pathname)!;
+const release = await fetchLatestRelease();
+const crumbs = [{ label: 'Home', path: '/' }, ...(page.path === '/guides/' ? [] : [{ label: 'Guides', path: '/guides/' }]), page];
+---
+<Layout releaseVersion={release.version} releaseDate={release.publishedAt}>
+  <StructuredData data={{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, name: crumb.label, item: new URL(crumb.path, siteFacts.url).href })) }} />
+  <article class="guide">
+    <nav aria-label="Breadcrumb"><ol>{crumbs.map((crumb, i) => <li>{i === crumbs.length - 1 ? <span aria-current="page">{crumb.label}</span> : <a href={crumb.path}>{crumb.label}</a>}</li>)}</ol></nav>
+    <header>
+      <p class="eyebrow">Fleuron contributors · Reviewed <time datetime={siteFacts.reviewedOn}>{siteFacts.reviewedOn}</time></p>
+      <h1>{heading}</h1>
+      <p class="lead">{lead}</p>
+    </header>
+    <div class="prose"><slot /></div>
+    {sources.length > 0 && <section class="sources" aria-labelledby="guide-sources"><h2 id="guide-sources">Sources and further reading</h2><ul>{sources.map(source => <li><a href={source.url}>{source.label}</a></li>)}</ul></section>}
+    <footer class="next"><a href="/guides/">All guides</a><a href="/privacy/">Privacy and sync</a><a href="/download/">Download Fleuron</a></footer>
+  </article>
+</Layout>
+<style>
+  .guide { max-width: 58rem; margin: auto; }
+  nav ol { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; font: 0.8125rem var(--font-mono); }
+  nav li:not(:last-child)::after { content: '/'; margin-left: 0.6rem; }
+  header { margin: 2.5rem 0; border-bottom: 3px solid var(--rule); padding-bottom: 2rem; }
+  .eyebrow { font: 0.8125rem var(--font-mono); color: var(--muted); margin-bottom: 1rem; }
+  h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; max-width: 26ch; margin-bottom: 1.25rem; }
+  .lead { font-size: 1.25rem; line-height: 1.6; max-width: var(--measure); }
+  .prose :global(h2), .sources h2 { margin: 2.5rem 0 1rem; font-size: 1.625rem; line-height: 1.3; }
+  .prose :global(h3) { margin: 1.75rem 0 0.75rem; font-size: 1.25rem; }
+  .prose :global(p), .prose :global(li), .sources li { font-size: 1.125rem; line-height: 1.65; }
+  .prose :global(p) { max-width: var(--measure); margin: 0 0 1.25rem; }
+  .prose :global(ul), .prose :global(ol), .sources ul { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  .prose :global(li) { margin-bottom: 0.5rem; }
+  .prose :global(blockquote) { border-left: 4px solid var(--rule); padding: 1rem 1.5rem; margin: 1.5rem 0; background: var(--paper); }
+  .prose :global(blockquote p:last-child) { margin-bottom: 0; }
+  .prose :global(.note) { border: 2px solid var(--rule); box-shadow: 4px 4px 0 var(--rule); padding: 1.25rem; margin: 1.5rem 0; }
+  .prose :global(.table-scroll) { overflow-x: auto; margin: 1.5rem 0; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; min-width: 44rem; }
+  .prose :global(th), .prose :global(td) { border: 1px solid var(--rule); padding: 0.875rem; text-align: left; vertical-align: top; font-size: 1rem; line-height: 1.55; }
+  .prose :global(th) { font-family: var(--font-mono); font-size: 0.875rem; }
+  .prose :global(code) { font-family: var(--font-mono); font-size: 0.875em; overflow-wrap: anywhere; }
+  .prose :global(figcaption) { font-size: 0.875rem; line-height: 1.5; color: var(--muted); margin: 0.75rem 0 1.5rem; }
+  .prose :global(img) { max-width: 100%; height: auto; border: 2px solid var(--rule); }
+  .sources { border-top: 2px solid var(--rule); margin-top: 3rem; }
+  .next { display: flex; flex-wrap: wrap; gap: 1.5rem; border-top: 2px solid var(--rule); padding-top: 1.5rem; margin-top: 2rem; font-family: var(--font-mono); font-size: 0.875rem; }
+</style>

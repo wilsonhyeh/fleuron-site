@@ -11,6 +11,8 @@ import transcriptScreen from '../assets/screens/transcript-coding.webp';
 import codebookScreen from '../assets/screens/codebook-panel.webp';
 import exportScreen from '../assets/screens/export-dialog.webp';
 import { fetchLatestRelease } from '../lib/release';
+import { siteFacts } from '../content/site-facts';
+import StructuredData from '../components/StructuredData.astro';
 
 const release = await fetchLatestRelease();
 ---
@@ -21,14 +23,24 @@ const release = await fetchLatestRelease();
   releaseVersion={release.version}
   releaseDate={release.publishedAt}
 >
+  <StructuredData data={{ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebSite', '@id': `${siteFacts.url}#website`, name: 'Fleuron', url: siteFacts.url },
+    { '@type': 'SoftwareApplication', '@id': `${siteFacts.url}#software`, name: 'Fleuron', url: siteFacts.url,
+      applicationCategory: 'EducationApplication', operatingSystem: ['macOS 14+', 'Windows 11 x64'],
+      softwareVersion: release.version, downloadUrl: `${siteFacts.url}download/`, license: siteFacts.sources.license,
+      description: siteFacts.lead, offers: { '@type': 'Offer', name: 'Free offline coding', price: 0, priceCurrency: 'USD', url: `${siteFacts.url}download/` } }
+  ] }} />
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1 class="hero-title">Qualitative analysis that lives on your computer.</h1>
+      <h1 class="hero-title">Free qualitative analysis software that runs on your computer.</h1>
       <p class="hero-lead">
-        Commercial qualitative tools like NVivo, MAXQDA, and Dedoose cost hundreds to thousands per seat per year, and your transcripts live on someone else's server. <Mark>I built Fleuron because I needed neither of those things to be true.</Mark>
+        {siteFacts.lead}
+      </p>
+      <p class="hero-origin"><Mark>I built Fleuron because I wanted to code interviews without a software subscription or uploading my transcripts to a hosted analysis service.</Mark>
       </p>
 
+      <p class="offer-scope">{siteFacts.pricingShort}</p>
       <div class="hero-cta">
         <div class="cta-buttons" id="download-cta-group">
           <!-- Server-rendered default: both buttons visible -->
@@ -54,9 +66,9 @@ const release = await fetchLatestRelease();
         <div class="hero-meta">
           <span class="mono-meta">Version {release.version} ({release.publishedAt})</span>
           <span class="meta-sep">·</span>
-          <a href="/download">All downloads & checksums</a>
+          <a href="/download/">All downloads & checksums</a>
           <span class="meta-sep">·</span>
-          <a href="/install">Install guide</a>
+          <a href="/install/">Install guide</a>
         </div>
       </div>
     </div>
@@ -100,7 +112,7 @@ const release = await fetchLatestRelease();
       />
     </WindowChrome>
     <p class="screenshot-caption">
-      Span-level and whole-turn coding in the dark-themed workspace with keyboard navigation and instant code assignment.
+      Synthetic community-garden interview in the demo workspace. Span-level and whole-turn coding with keyboard navigation.
     </p>
   </section>
 
@@ -113,28 +125,28 @@ const release = await fetchLatestRelease();
       <Frame class="feature-card">
         <h3 class="feature-title">Span and whole-turn coding</h3>
         <p class="feature-text">
-          Code precise word spans or entire speaker turns. Assign codes with one keystroke without lifting your hands from the keyboard.
+          Code precise word spans or entire speaker turns. Use the coding bubble and keyboard shortcuts to assign codes.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Living codebook</h3>
         <p class="feature-text">
-          Organize codes into hierarchies with explicit definitions, inclusion and exclusion criteria, and exemplar quotes directly attached.
+          Organize evolving codes into hierarchies. Add optional definitions, criteria and examples as your interpretation develops.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Reflexive memos</h3>
         <p class="feature-text">
-          Write analytic memos and methodological notes alongside your transcripts. Memos remain private to your local disk and never sync.
+          Write analytic memos and methodological notes alongside your transcripts. Memo fields are excluded from collaboration sync; exports can include them.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Multi-format import & rich export</h3>
         <p class="feature-text">
-          Import plain text, Word documents, and timestamped transcripts. Export self-contained HTML reports, formatted PDFs, and CSV matrices.
+          Import plain text, Word .docx files, .vtt/.srt transcripts, and CSV/TSV text. Export self-contained HTML reports, formatted PDFs, and CSV matrices.
         </p>
       </Frame>
     </div>
@@ -146,11 +158,11 @@ const release = await fetchLatestRelease();
   <section class="section-boundary">
     <h2 class="section-title">Where your research data lives</h2>
     <p class="section-lead">
-      Your raw transcript files, verbatim quotes, and personal notes stay on your local disk. Optional cloud sync coordinates study metadata and codebook definitions without transmitting your source transcripts.
+      {siteFacts.privacy}
     </p>
     <BoundaryDiagram />
     <div class="boundary-link">
-      <a href="/privacy" class="text-link">Read the complete data boundary and permissions disclosure →</a>
+      <a href="/privacy/" class="text-link">Read the complete data boundary and permissions disclosure →</a>
     </div>
   </section>
 
@@ -192,7 +204,7 @@ const release = await fetchLatestRelease();
     <h2 class="section-title">What it costs</h2>
     <div class="pricing-card">
       <p class="pricing-text">
-        Offline coding is free forever. If you collaborate with a research team, cloud sync is optional and free during the beta. Founder pricing will be preserved for everyone who joins during the beta period. Self-hosting your own backend server is always free.
+        {siteFacts.pricing}
       </p>
     </div>
   </section>
@@ -206,14 +218,14 @@ const release = await fetchLatestRelease();
       <div class="limit-item">
         <h3 class="limit-title">Unsigned installers</h3>
         <p class="limit-text">
-          Fleuron is independent open-source software. It does not carry expensive corporate certificates, so macOS and Windows will show an unidentified developer warning on first launch.
+          {siteFacts.signing} <a href="/install/">Read the installation guide</a>.
         </p>
       </div>
 
       <div class="limit-item">
         <h3 class="limit-title">Operating systems</h3>
         <p class="limit-text">
-          Available for macOS (Intel and Apple Silicon universal build) and Windows 10/11 (x64). Linux packages are not currently built.
+          {siteFacts.platforms}
         </p>
       </div>
 
@@ -227,14 +239,35 @@ const release = await fetchLatestRelease();
       <div class="limit-item">
         <h3 class="limit-title">Issue tracker support</h3>
         <p class="limit-text">
-          Support is provided exclusively through public GitHub Issues. There is no private email support or chat helpdesk.
+          Ordinary support uses public GitHub Issues. Report security vulnerabilities privately through GitHub security reporting. There is no email support or chat helpdesk.
         </p>
       </div>
     </div>
   </section>
+  <Rule />
+  <section class="section-learning">
+    <h2 class="section-title">Try a small analysis</h2>
+    <p class="section-lead">Start with fictional interviews and follow the <a href="/guides/code-interview-transcripts/">transcript-coding tutorial</a>. Explore a <a href="/guides/reflexive-thematic-analysis/">reflexive thematic analysis workflow</a> or <a href="/compare/free-qualitative-analysis-software/">compare Fleuron, Taguette and QualCoder</a>.</p>
+  </section>
+  <Rule />
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title" class="section-title">Common questions</h2>
+    <details><summary>What is free, and what will be paid?</summary><p>{siteFacts.pricing}</p></details>
+    <details><summary>Can I code without an account or internet connection?</summary><p>No account is needed for local coding. {siteFacts.network}</p></details>
+    <details><summary>What data syncs?</summary><p>{siteFacts.privacy} <a href="/privacy/">Read the full disclosure</a>.</p></details>
+    <details><summary>Which import and export formats are supported?</summary><p>Import .txt, .md, .docx, .vtt, .srt, .csv and .tsv transcripts. Export HTML and PDF reports and CSV coded passages or framework matrices. Fleuron does not import native NVivo project files.</p></details>
+    <details><summary>Which operating systems are supported?</summary><p>{siteFacts.platforms} <a href="/download/">Check download and installation details</a>.</p></details>
+    <details><summary>Does software replace methodological judgment?</summary><p>No. Fleuron helps you organize coding and memos. It does not validate interpretations, establish research rigor or certify compliance. <a href="/guides/reflexive-thematic-analysis/">Read the workflow guide</a>.</p></details>
+  </section>
 </Layout>
 
 <style>
+  .hero-origin, .offer-scope { max-width: var(--measure); margin-bottom: 1.5rem; line-height: 1.6; }
+  .offer-scope { font-family: var(--font-mono); font-size: 0.9375rem; }
+  .faq details { border-bottom: 1px solid var(--rule); padding: 1rem 0; }
+  .faq summary { cursor: pointer; font-weight: 600; font-size: 1.125rem; }
+  .faq p { margin: 0.75rem 0; max-width: var(--measure); line-height: 1.6; }
+
   .hero-section {
     padding: 1.5rem 0 2rem;
   }
@@ -364,7 +397,7 @@ const release = await fetchLatestRelease();
 
   .screens-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     gap: 2rem;
   }
 

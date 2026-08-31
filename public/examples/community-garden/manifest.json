@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "title": "Community garden practice",
+  "license": "CC0-1.0",
+  "synthetic": true,
+  "participantData": false,
+  "reviewedOn": "2026-08-30",
+  "generatedAt": "2026-08-31T00:22:04.207743+00:00",
+  "provenance": {
+    "application": "Fleuron",
+    "version": "2.1.0 development",
+    "sourceRepository": "https://github.com/wilson-taiwan/fleuron",
+    "sourceBaseCommit": "d1d9903a0b935f423547ce92673346fd61a4ab9e",
+    "workingTree": "Disclosure-copy changes were present. A temporary driver invoked normal frontend store actions and the real native bridge; it has been removed. Import and export behavior was unchanged from the source base.",
+    "workflow": "Isolated native Tauri development window; six format imports checked; phrase and whole-turn coding, code rename and memos checked; HTML/PDF/CSV generated through normal export actions.",
+    "limits": "Not a manual installer test or a supported-OS matrix test. Screenshot is from that native development window, resized and encoded as WebP. Export files are unmodified.",
+    "exportPreset": "reflexive-ta",
+    "exportItems": [
+      "report-html",
+      "report-pdf",
+      "coded-segments",
+      "codebook",
+      "memos"
+    ]
+  },
+  "expected": {
+    "interviews": 2,
+    "turnsPerInterview": 6,
+    "codedSegments": 2,
+    "coder": "Practice coder",
+    "phrase": "Now I stay to help the next person get started.",
+    "renamedCode": "Belonging through helping",
+    "codingMemo": "I first read helping as enjoyment. The later concern about being welcome suggests belonging may feel conditional. I need to compare this with the request for a quiet week."
+  },
+  "files": [
+    {
+      "name": "README.txt",
+      "bytes": 806,
+      "sha256": "0fba6471ca3795e5a0e3ac2fce92e06a8c1636ef17e4ab554f6e97f9d3d233c3"
+    },
+    {
+      "name": "coded-segments.csv",
+      "bytes": 668,
+      "sha256": "0eb1acccf0f9947b27939f14b4477ac7e8fa2e05057352033d3d5ea5821fd41c"
+    },
+    {
+      "name": "coding-workspace.webp",
+      "bytes": 58368,
+      "sha256": "cffac63d6724fef69886ac8ddfe987b92f532876842eccd4b4eccf0454c27aed"
+    },
+    {
+      "name": "corpus.json",
+      "bytes": 1715,
+      "sha256": "01a07f77504dd7923549be7ca014cbdc5e01dcf1fc0d942ceae98fae59dd396e"
+    },
+    {
+      "name": "interview-01.docx",
+      "bytes": 38338,
+      "sha256": "8a7325712c18cb42482e831871c84b853e3db3373af50bb67afc78af1e84582e"
+    },
+    {
+      "name": "interview-01.txt",
+      "bytes": 541,
+      "sha256": "fb08a9430f601a2a44fe781ef2dd6d468c9509f2ee7e799bd52b40d4702fe53f"
+    },
+    {
+      "name": "interview-01.vtt",
+      "bytes": 741,
+      "sha256": "cabb8cff1a1d956d84d57b2da32382f7de08a7db84deb22913a78601bae0fb36"
+    },
+    {
+      "name": "interview-02.docx",
+      "bytes": 38367,
+      "sha256": "4c094e183d4342698fc2c65ff39a926b517dea6fbd9b53154fdf014e4eb9694b"
+    },
+    {
+      "name": "interview-02.txt",
+      "bytes": 567,
+      "sha256": "cd5de1c3888f4f0283786614f98a087fd74964b56633e6cb6239a50b44468f57"
+    },
+    {
+      "name": "interview-02.vtt",
+      "bytes": 767,
+      "sha256": "f4dbbcb1c6d419cb92009055d59deba56e8d9ad37b05a60c4e170946abf31164"
+    },
+    {
+      "name": "report.html",
+      "bytes": 11791,
+      "sha256": "f09f3fa47a313e5e1c56f9fcac331f0d08311a40ce3e96e85b514454be23d7e2"
+    },
+    {
+      "name": "report.pdf",
+      "bytes": 51041,
+      "sha256": "58c9aa1597df9c02273787879f4969b1fe3cf1083e4680adb5cfe2e4057bc657"
+    }
+  ]
+}

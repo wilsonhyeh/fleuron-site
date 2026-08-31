@@ -1,0 +1,62 @@
+[
+  {
+    "id": "interview-01",
+    "speaker": "Volunteer A",
+    "turns": [
+      [
+        "Interviewer",
+        "What brought you to the garden?"
+      ],
+      [
+        "Volunteer A",
+        "I only came for vegetables at first. Now I stay to help the next person get started."
+      ],
+      [
+        "Interviewer",
+        "How do you decide what needs doing?"
+      ],
+      [
+        "Volunteer A",
+        "The rules said to water only our own plots. When my neighbor missed a week, I watered theirs too. I did not want their plants to suffer."
+      ],
+      [
+        "Interviewer",
+        "Has helping changed how you feel here?"
+      ],
+      [
+        "Volunteer A",
+        "People say thank you, which makes me feel part of the garden. Sometimes I worry that if I stop helping, I will not feel welcome."
+      ]
+    ]
+  },
+  {
+    "id": "interview-02",
+    "speaker": "Volunteer B",
+    "turns": [
+      [
+        "Interviewer",
+        "What does a usual visit look like?"
+      ],
+      [
+        "Volunteer B",
+        "I check the shared watering list before my own plot. It is easier to join in when someone has written down what needs doing."
+      ],
+      [
+        "Interviewer",
+        "Do the rules help?"
+      ],
+      [
+        "Volunteer B",
+        "The plot borders help me know where to start, but they are not a reason to leave a dry plant alone. We talk and work things out."
+      ],
+      [
+        "Interviewer",
+        "Is there anything you would change?"
+      ],
+      [
+        "Volunteer B",
+        "I like helping, but the same few people always do the extra jobs. I wish we could ask for a quiet week without having to explain ourselves."
+      ]
+    ]
+  }
+]

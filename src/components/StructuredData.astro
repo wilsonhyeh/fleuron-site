@@ -1,0 +1,6 @@
+---
+import { serializeStructuredData } from '../lib/structured-data';
+interface Props { data: unknown }
+const { data } = Astro.props;
+---
+<script is:inline type="application/ld+json" set:html={serializeStructuredData(data)} />
