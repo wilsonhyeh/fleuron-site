@@ -17,7 +17,11 @@ Do not recreate either repository or Pages project, add remotes, move nameserver
 
 The live Pages API was checked on 2026-08-30: this project has no Git source or hosted build command and uses Direct Upload. Build locally with Node 22.12+ and `npm run verify`, then upload the reviewed `dist` to the existing project. Keep production branch `main`. CI also runs `npm run verify` with Chromium. Do not invent a hosted build setting or recreate the project to add Git integration. See [Cloudflare Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
 
-Preserve the existing app release-published hook and `.github/workflows/scheduled-rebuild.yml` weekly hook trigger. Their presence does not prove automatic rebuilds work: no Git build source is configured on this project. Automatic rebuild/deploy wiring needs separate repair with an appropriate deployment credential; until verified, rebuild and publish manually after app releases. Do not create another schedule. Secret hook URLs stay in secret storage. The release fetcher still rejects draft/prerelease results; do not weaken it to make a build pass.
+Automatic publishing was repaired on 2026-09-01 and is verified. `.github/workflows/deploy.yml` builds this repository and publishes with `wrangler pages deploy`, which is itself Direct Upload — the project still has no Git source and no hosted build command, and must not be given one. Three triggers call it: the manual **Run workflow** button and the weekly `0 6 * * 1` cron, both via `scheduled-rebuild.yml`, and `release: [published]` in the app repo via `notify-site.yml`. **Pushes to `main` deliberately do not publish** — they run `ci.yml` only, so an unreviewed rebuild never reaches production.
+
+The prior design POSTed to a Cloudflare Pages deploy hook and could never have worked: a deploy hook starts a hosted build, and a Direct Upload project has none. It returned HTTP 500 on its first and only real run (2026-08-31, site run `33394069693`) with a valid secret present. The `CLOUDFLARE_PAGES_DEPLOY_HOOK` secret has been deleted from both repositories. Do not reintroduce a hook.
+
+Deploys authenticate with `CLOUDFLARE_API_TOKEN` (scoped to Account / Cloudflare Pages / Edit) plus `CLOUDFLARE_ACCOUNT_ID`, set as Actions secrets on both repositories. `notify-site.yml` passes those two secrets explicitly rather than using `secrets: inherit`, because the app repository holds Tauri signing keys that must never be forwarded. Do not create another schedule. Credential values stay in secret storage and never in this repository. The release fetcher still rejects draft/prerelease results; do not weaken it to make a build pass.
 
 Builds fetch the current public release and installation document. A later local or CI build can consume different upstream content. Compare the published version/file SHA with the reviewed local build and rerun review if either changed. A successful build alone is not evidence that new upstream copy was reviewed.
 
@@ -36,7 +40,9 @@ The nine final HTML URLs must return direct 200s, slashless URLs must permanentl
 
 ## Consolidate duplicate production hosts
 
-Apply only after the apex is healthy and the exact account/DNS changes are approved.
+**The pages.dev consolidation below was applied and verified on 2026-09-01.** It is retained as the specification and the rollback reference, not as outstanding work. `fleuron-site.pages.dev/download/?audit=1` now returns a single 301 to the apex with path and query preserved; a current preview deployment still returns 200 with `X-Robots-Tag: noindex` and is not redirected, which is what keeping include-subdomains disabled protects. `check-deployed.mjs --production-hosts` reports no failures.
+
+The www forwarding subsection was applied earlier and also passes. Apply anything here only after the apex is healthy and the exact account/DNS changes are approved.
 
 ### Production pages.dev
 
