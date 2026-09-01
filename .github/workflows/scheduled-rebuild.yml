@@ -1,4 +1,4 @@
-name: Scheduled Rebuild
+name: Rebuild and deploy site
 
 on:
   schedule:
@@ -6,13 +6,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  rebuild:
-    name: Trigger Deploy Hook
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Cloudflare Pages deploy
-        env:
-          HOOK: ${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK }}
-        run: |
-          test -n "$HOOK" || { echo "CLOUDFLARE_PAGES_DEPLOY_HOOK is not set; skipping"; exit 0; }
-          curl -fsS -X POST "$HOOK"
+  deploy:
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
