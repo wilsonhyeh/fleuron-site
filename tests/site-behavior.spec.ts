@@ -9,9 +9,12 @@ for (const width of [390, 1280]) {
         await page.emulateMedia({ colorScheme: theme });
         const unexpected: string[] = [];
         const errors: string[] = [];
+        // Allowlist: the Cloudflare Web Analytics beacon (script load + visit
+        // beacons), disclosed on /privacy/. Everything else external fails.
+        const allowedExternal = new Set(['https://static.cloudflareinsights.com', 'https://cloudflareinsights.com']);
         page.on('request', request => {
           const url = new URL(request.url());
-          if (!['http://127.0.0.1:4321', 'null'].includes(url.origin)) unexpected.push(`${url.origin}${url.pathname}`);
+          if (!['http://127.0.0.1:4321', 'null'].includes(url.origin) && !allowedExternal.has(url.origin)) unexpected.push(`${url.origin}${url.pathname}`);
         });
         page.on('pageerror', error => errors.push(error.message));
         const response = await page.goto(route.path);

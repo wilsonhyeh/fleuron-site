@@ -111,11 +111,11 @@ const release = await fetchLatestRelease();
 
       <Frame class="guarantee-card">
         <ul class="guarantee-list">
-          <li><strong>No analytics:</strong> We run no Google Analytics, Plausible, PostHog, or tracking pixels.</li>
+          <li><strong>Visit counts, no cross-site tracking:</strong> We count page visits with Cloudflare Web Analytics. It sets no cookies and does not track you across sites; it records the page visited, the referrer, and basic browser, device and load-performance facts. We run no Google Analytics, Plausible, PostHog, advertising trackers, or tracking pixels.</li>
           <li><strong>Theme storage:</strong> The theme toggle stores your choice in browser local storage. We do not add tracking cookies.</li>
           <li><strong>No forms or inputs:</strong> We collect no emails, names, newsletters, or visitor submissions.</li>
-          <li><strong>Page assets:</strong> Fonts, styles, scripts and images are served from this domain. Cloudflare can separately receive browser network-error reports. <a href={siteFacts.sources.nel}>Read Cloudflare’s explanation</a>.</li>
-          <li><strong>What checks cover:</strong> Our asset-reference check scans generated HTML and CSS for externally hosted resources. It does not prove the absence of every runtime request or hosting-layer report.</li>
+          <li><strong>Page assets:</strong> Fonts, styles, scripts and images are served from this domain, except the Cloudflare analytics beacon (<span class="mono-code">static.cloudflareinsights.com</span>). Cloudflare can separately receive browser network-error reports. <a href={siteFacts.sources.nel}>Read Cloudflare’s explanation</a>.</li>
+          <li><strong>What checks cover:</strong> Our asset-reference check scans generated HTML and CSS for externally hosted resources, allowing only the analytics beacon above. It does not prove the absence of every runtime request or hosting-layer report.</li>
         </ul>
       </Frame>
     </section>
