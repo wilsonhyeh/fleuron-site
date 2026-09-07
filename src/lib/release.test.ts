@@ -3,29 +3,29 @@ import { parseReleasePayload, formatFileSize } from './release';
 
 const validReleasePayload = {
   tag_name: 'v2.1.0',
-  html_url: 'https://github.com/wilson-taiwan/fleuron/releases/tag/v2.1.0',
+  html_url: 'https://github.com/wilsonhyeh/fleuron/releases/tag/v2.1.0',
   published_at: '2026-08-29T15:55:12Z',
   draft: false,
   prerelease: false,
   assets: [
     {
       name: 'latest.json',
-      browser_download_url: 'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/latest.json',
+      browser_download_url: 'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/latest.json',
       size: 1851,
     },
     {
       name: 'Fleuron_2.1.0_x64-setup.exe',
-      browser_download_url: 'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_x64-setup.exe',
+      browser_download_url: 'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_x64-setup.exe',
       size: 12582912, // 12 MB
     },
     {
       name: 'SHA256SUMS.txt',
-      browser_download_url: 'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/SHA256SUMS.txt',
+      browser_download_url: 'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/SHA256SUMS.txt',
       size: 558,
     },
     {
       name: 'Fleuron_2.1.0_universal.dmg',
-      browser_download_url: 'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_universal.dmg',
+      browser_download_url: 'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_universal.dmg',
       size: 18874368, // 18 MB
     },
   ],
@@ -38,18 +38,18 @@ describe('release parser', () => {
     expect(data.publishedAt).toBe('2026-08-29');
     expect(data.mac.name).toBe('Fleuron_2.1.0_universal.dmg');
     expect(data.mac.url).toBe(
-      'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_universal.dmg'
+      'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_universal.dmg'
     );
     expect(data.mac.formattedSize).toBe('18.0 MB');
     expect(data.win.name).toBe('Fleuron_2.1.0_x64-setup.exe');
     expect(data.win.url).toBe(
-      'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_x64-setup.exe'
+      'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/Fleuron_2.1.0_x64-setup.exe'
     );
     expect(data.win.formattedSize).toBe('12.0 MB');
     expect(data.checksumsUrl).toBe(
-      'https://github.com/wilson-taiwan/fleuron/releases/download/v2.1.0/SHA256SUMS.txt'
+      'https://github.com/wilsonhyeh/fleuron/releases/download/v2.1.0/SHA256SUMS.txt'
     );
-    expect(data.releaseUrl).toBe('https://github.com/wilson-taiwan/fleuron/releases/tag/v2.1.0');
+    expect(data.releaseUrl).toBe('https://github.com/wilsonhyeh/fleuron/releases/tag/v2.1.0');
   });
 
   it('throws when payload is marked draft', () => {

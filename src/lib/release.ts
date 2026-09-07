@@ -68,7 +68,7 @@ export function parseReleasePayload(data: any): ReleaseData {
   const checksumsAsset = assets.find((a: any) => a.name === 'SHA256SUMS.txt');
   const checksumsUrl =
     checksumsAsset?.browser_download_url ||
-    `${data.html_url || 'https://github.com/wilson-taiwan/fleuron/releases'}/download/SHA256SUMS.txt`;
+    `${data.html_url || 'https://github.com/wilsonhyeh/fleuron/releases'}/download/SHA256SUMS.txt`;
 
   return {
     version,
@@ -86,7 +86,7 @@ export function parseReleasePayload(data: any): ReleaseData {
       formattedSize: formatFileSize(winAsset.size),
     },
     checksumsUrl,
-    releaseUrl: data.html_url || `https://github.com/wilson-taiwan/fleuron/releases/tag/${data.tag_name}`,
+    releaseUrl: data.html_url || `https://github.com/wilsonhyeh/fleuron/releases/tag/${data.tag_name}`,
   };
 }
 
@@ -97,7 +97,7 @@ export async function fetchLatestRelease(): Promise<ReleaseData> {
     return cachedRelease;
   }
 
-  const url = 'https://api.github.com/repos/wilson-taiwan/fleuron/releases/latest';
+  const url = 'https://api.github.com/repos/wilsonhyeh/fleuron/releases/latest';
   const headers: Record<string, string> = {
     'User-Agent': 'fleuron-site-build',
     Accept: 'application/vnd.github.v3+json',

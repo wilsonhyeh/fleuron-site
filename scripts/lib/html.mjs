@@ -47,7 +47,7 @@ export function auditPage(html, page, { errorPage = false } = {}) {
         expect(page.path === '/' && !errorPage, 'SoftwareApplication belongs on home only');
         expect(schema.name === 'Fleuron' && schema.softwareVersion, 'application identity/version missing');
         expect(schema.offers?.price === 0 && schema.offers?.priceCurrency === 'USD', 'offline offer must be free');
-        expect(schema.license === 'https://github.com/wilson-taiwan/fleuron/blob/main/LICENSE', 'license mismatch');
+        expect(schema.license === 'https://github.com/wilsonhyeh/fleuron/blob/main/LICENSE', 'license mismatch');
         expect(schema.operatingSystem?.includes('macOS 14+') && schema.operatingSystem?.includes('Windows 11 x64'), 'support mismatch');
         expect(schema.description?.includes('Optional team sync'), 'description omits optional scope');
       }

@@ -20,7 +20,7 @@ jobs:
       - name: Checkout site repository
         uses: actions/checkout@v4
         with:
-          repository: wilson-taiwan/fleuron-site
+          repository: wilsonhyeh/fleuron-site
           ref: main
 
       - name: Setup Node.js

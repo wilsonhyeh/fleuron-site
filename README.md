@@ -1,8 +1,8 @@
 # fleuron.study
 
-Official front-door website for [Fleuron](https://github.com/wilson-taiwan/fleuron), the offline-first qualitative analysis app.
+Official front-door website for [Fleuron](https://github.com/wilsonhyeh/fleuron), the offline-first qualitative analysis app.
 
-The desktop application source code, releases, and issue tracker live at [github.com/wilson-taiwan/fleuron](https://github.com/wilson-taiwan/fleuron).
+The desktop application source code, releases, and issue tracker live at [github.com/wilsonhyeh/fleuron](https://github.com/wilsonhyeh/fleuron).
 
 ## Development
 

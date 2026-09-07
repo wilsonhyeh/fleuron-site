@@ -14,10 +14,10 @@ export const siteFacts = {
   windows: 'Windows 11 x64 supported; Windows 10 best effort',
   signing: 'Current builds are not Apple-notarized or Windows publisher-signed. See the installation guide for expected warnings and when to stop.',
   sources: {
-    repository: 'https://github.com/wilson-taiwan/fleuron',
-    license: 'https://github.com/wilson-taiwan/fleuron/blob/main/LICENSE',
-    privacy: 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
-    platforms: 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
+    repository: 'https://github.com/wilsonhyeh/fleuron',
+    license: 'https://github.com/wilsonhyeh/fleuron/blob/main/LICENSE',
+    privacy: 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
+    platforms: 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
     nel: 'https://developers.cloudflare.com/network-error-logging/',
   },
 } as const;

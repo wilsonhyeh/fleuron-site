@@ -52,7 +52,7 @@ test('download links remain visible and target official release assets', async (
   for (const platform of ['macOS', 'Windows']) {
     const link = page.getByRole('link', { name: `Download for ${platform}`, exact: true });
     await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute('href', /^https:\/\/github\.com\/wilson-taiwan\/fleuron\/releases\/download\/v/);
+    await expect(link).toHaveAttribute('href', /^https:\/\/github\.com\/wilsonhyeh\/fleuron\/releases\/download\/v/);
   }
 });
 

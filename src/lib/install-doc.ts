@@ -10,18 +10,18 @@ export interface InstallingDocData {
 }
 
 const KNOWN_LINK_MAPPINGS: Record<string, string> = {
-  'IT-DEPLOYMENT.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
-  'docs/IT-DEPLOYMENT.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
-  'PRIVACY-AND-PERMISSIONS.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
-  'docs/PRIVACY-AND-PERMISSIONS.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
-  'USER-GUIDE.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/USER-GUIDE.md',
-  'docs/USER-GUIDE.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/USER-GUIDE.md',
-  'SUPPORT.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/SUPPORT.md',
-  'SECURITY.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/SECURITY.md',
-  'CHANGELOG.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/CHANGELOG.md',
-  'README.md': 'https://github.com/wilson-taiwan/fleuron/blob/main/README.md',
-  'support/': 'https://github.com/wilson-taiwan/fleuron/tree/main/support',
-  'support': 'https://github.com/wilson-taiwan/fleuron/tree/main/support',
+  'IT-DEPLOYMENT.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
+  'docs/IT-DEPLOYMENT.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/IT-DEPLOYMENT.md',
+  'PRIVACY-AND-PERMISSIONS.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
+  'docs/PRIVACY-AND-PERMISSIONS.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md',
+  'USER-GUIDE.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/USER-GUIDE.md',
+  'docs/USER-GUIDE.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/USER-GUIDE.md',
+  'SUPPORT.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/SUPPORT.md',
+  'SECURITY.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/SECURITY.md',
+  'CHANGELOG.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/CHANGELOG.md',
+  'README.md': 'https://github.com/wilsonhyeh/fleuron/blob/main/README.md',
+  'support/': 'https://github.com/wilsonhyeh/fleuron/tree/main/support',
+  'support': 'https://github.com/wilsonhyeh/fleuron/tree/main/support',
 };
 
 const renderer = new Renderer();
@@ -79,7 +79,7 @@ export function transformInstallingMarkdown(markdown: string, sha: string): Inst
     html,
     sha: sha || '',
     shortSha,
-    sourceUrl: 'https://github.com/wilson-taiwan/fleuron/blob/main/docs/INSTALLING.md',
+    sourceUrl: 'https://github.com/wilsonhyeh/fleuron/blob/main/docs/INSTALLING.md',
   };
 }
 
@@ -90,7 +90,7 @@ export async function fetchInstallingDoc(): Promise<InstallingDocData> {
     return cachedDoc;
   }
 
-  const contentsApiUrl = 'https://api.github.com/repos/wilson-taiwan/fleuron/contents/docs/INSTALLING.md';
+  const contentsApiUrl = 'https://api.github.com/repos/wilsonhyeh/fleuron/contents/docs/INSTALLING.md';
   const headers: Record<string, string> = {
     'User-Agent': 'fleuron-site-build',
     Accept: 'application/vnd.github.v3+json',

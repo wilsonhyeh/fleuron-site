@@ -9,7 +9,7 @@
   "provenance": {
     "application": "Fleuron",
     "version": "2.1.0 development",
-    "sourceRepository": "https://github.com/wilson-taiwan/fleuron",
+    "sourceRepository": "https://github.com/wilsonhyeh/fleuron",
     "sourceBaseCommit": "d1d9903a0b935f423547ce92673346fd61a4ab9e",
     "workingTree": "Disclosure-copy changes were present. A temporary driver invoked normal frontend store actions and the real native bridge; it has been removed. Import and export behavior was unchanged from the source base.",
     "workflow": "Isolated native Tauri development window; six format imports checked; phrase and whole-turn coding, code rename and memos checked; HTML/PDF/CSV generated through normal export actions.",

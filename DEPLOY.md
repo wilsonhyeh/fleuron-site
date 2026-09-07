@@ -1,6 +1,6 @@
 # Maintaining fleuron.study
 
-The existing site is `wilson-taiwan/fleuron-site`, Cloudflare Pages project `fleuron-site`, production branch `main`. The app source is `wilson-taiwan/fleuron`; app installers remain GitHub release assets. DNS stays at Porkbun. This runbook does not authorize publication or account changes.
+The existing site is `wilsonhyeh/fleuron-site`, Cloudflare Pages project `fleuron-site`, production branch `main`. The app source is `wilsonhyeh/fleuron`; app installers remain GitHub release assets. DNS stays at Porkbun. This runbook does not authorize publication or account changes.
 
 Do not recreate either repository or Pages project, add remotes, move nameservers, or replace the DNS zone. Never modify mail, MX, SPF, DKIM, DMARC or existing verification records. This project currently uses Direct Upload; a GitHub push runs CI but does not publish the site.
 
