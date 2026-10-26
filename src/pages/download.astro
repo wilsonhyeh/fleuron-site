@@ -22,6 +22,9 @@ const release = await fetchLatestRelease();
       <p class="page-lead">
         Offline-first reflexive thematic analysis for desktop. Choose the installer for your operating system.
       </p>
+      <p class="build-note">
+        This build saves as you work and has no account and no sync service. <a href="/privacy/">See where your data lives</a>.
+      </p>
       <div class="release-badge">
         <span class="mono-meta">Current release: v{release.version}</span>
         <span class="meta-sep">/</span>
@@ -159,6 +162,19 @@ const release = await fetchLatestRelease();
     line-height: 1.5;
     color: var(--ink);
     margin-bottom: 1.25rem;
+  }
+
+  .build-note {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .build-note a {
+    color: var(--ink);
+    text-decoration: underline;
   }
 
   .release-badge {

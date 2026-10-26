@@ -1,44 +1,43 @@
 ---
-import { siteFacts } from '../content/site-facts';
 interface Props { class?: string; showLink?: boolean }
 const { class: className = '', showLink = true } = Astro.props;
-const local = ['Transcript files and full text', 'Quote fields and passage text', 'Original filenames and folder paths', 'Analytic and coding memo fields', 'Full project database and backups', 'Interview dates and diagnosis fields'];
-const shared = ['Study and participant labels', 'Code names, hierarchy and colors', 'Definitions, criteria and examples', 'Coded spans: IDs and character offsets', 'Coder names and memberships', 'Content hashes and revision metadata'];
+const local = ['Transcript files and full text', 'Coded spans, quotes and code names', 'Codebook definitions and hierarchy', 'Analytic and coding memos', 'Study database and local backups', 'Exports you generate'];
+const online = ['App version request', 'Installer, if you approve'];
 ---
 <figure class:list={['diagram-container', className]}>
-  <svg viewBox="0 0 880 360" fill="none" xmlns="http://www.w3.org/2000/svg" class="boundary-svg" role="img" aria-labelledby="boundary-diagram-title boundary-diagram-desc">
-    <title id="boundary-diagram-title">Fleuron collaboration sync boundary</title>
-    <desc id="boundary-diagram-desc">Collaboration sync excludes transcript text, quote fields and memo fields. It shares codebook text and coding metadata. Copied quotes in codebook fields sync as written. Exports and backups may leave the device through sharing or synced folders. Authentication is described below.</desc>
-    <rect x="10" y="10" width="350" height="340" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
-    <rect x="520" y="10" width="350" height="340" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
+  <svg viewBox="0 0 880 380" fill="none" xmlns="http://www.w3.org/2000/svg" class="boundary-svg" role="img" aria-labelledby="boundary-diagram-title boundary-diagram-desc">
+    <title id="boundary-diagram-title">Where Fleuron keeps your research data</title>
+    <desc id="boundary-diagram-desc">Fleuron 2.8.0 stores the study on this computer: transcripts, coded spans, codebook, memos, database, backups and exports. The only outbound request is an update check to GitHub, which asks for the current version and downloads an installer if you approve. No transcripts, codes or notes are sent. Exports and backups can leave the device through sharing or synced folders.</desc>
+    <rect x="10" y="10" width="530" height="340" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
+    <rect x="610" y="10" width="260" height="340" fill="var(--paper)" stroke="var(--rule)" stroke-width="3" />
     <g font-family="var(--font-mono)" fill="var(--ink)" font-size="13" font-weight="600">
       <text x="30" y="43">THIS COMPUTER</text>
-      <text x="540" y="43">OPTIONAL SYNC SERVICE</text>
+      <text x="630" y="43">GITHUB</text>
     </g>
     <g font-family="var(--font-serif)" fill="var(--ink)" font-size="15">
-      <text x="30" y="76">Excluded from collaboration sync</text>
-      <text x="540" y="76">Shared when collaboration is enabled</text>
+      <text x="30" y="76">Your study folder, chosen by you</text>
+      <text x="630" y="76">Only the update check</text>
       {local.map((item, i) => <text x="30" y={120 + i * 33}>{item}</text>)}
-      {shared.map((item, i) => <text x="540" y={120 + i * 33}>{item}</text>)}
+      {online.map((item, i) => <text x="630" y={120 + i * 33}>{item}</text>)}
     </g>
-    <path d="M370 165 H504 M496 157 L504 165 L496 173" stroke="var(--rule)" stroke-width="3" />
-    <g font-family="var(--font-mono)" fill="var(--ink)" font-size="11" text-anchor="middle">
-      <text x="440" y="128">COLLABORATION</text><text x="440" y="144">SYNC</text>
-      <text x="440" y="197">HTTPS / WSS</text><text x="440" y="217">Transport encryption</text>
+    <text x="630" y="216" font-family="var(--font-serif)" fill="var(--ink)" font-size="15">No transcripts,</text>
+    <text x="630" y="237" font-family="var(--font-serif)" fill="var(--ink)" font-size="15">codes or notes.</text>
+    <path d="M548 165 H596 M588 157 L596 165 L588 173" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5" />
+    <g font-family="var(--font-mono)" fill="var(--muted)" font-size="11" text-anchor="middle">
+      <text x="572" y="132">UPDATE</text><text x="572" y="146">CHECK</text>
     </g>
-    <text x="30" y="326" font-family="var(--font-mono)" fill="var(--muted)" font-size="12">A SYNC BOUNDARY, NOT A SHARING LOCK</text>
-    <text x="540" y="326" font-family="var(--font-mono)" fill="var(--muted)" font-size="12">AUTHOR SHARED TEXT DE-IDENTIFIED</text>
+    <text x="30" y="326" font-family="var(--font-mono)" fill="var(--muted)" font-size="12">NO ACCOUNT, NO SYNC SERVICE</text>
+    <text x="630" y="326" font-family="var(--font-mono)" fill="var(--muted)" font-size="12">OPTIONAL IN SETTINGS</text>
   </svg>
   <div class="boundary-mobile">
-    <section><h3>Excluded from collaboration sync</h3><ul>{local.map(item => <li>{item}</li>)}</ul></section>
-    <p class="sync-label">Collaboration sync · HTTPS / WSS</p>
-    <section><h3>Shared when collaboration is enabled</h3><ul>{shared.map(item => <li>{item}</li>)}</ul></section>
+    <section><h3>Stays on this computer</h3><ul>{local.map(item => <li>{item}</li>)}</ul><p class="footnote">No account, no sync service.</p></section>
+    <section><h3>Leaves for the update check</h3><ul>{online.map(item => <li>{item}</li>)}</ul><p class="footnote">No transcripts, codes or notes. Update checks can be turned off in Settings.</p></section>
   </div>
-  <figcaption>
-    <p>Codebook text syncs as written, including any copied quotes. Exports and backups can leave your device through sharing or synced folders.</p>
-    <p>{siteFacts.credentials}</p>
-    {showLink && <a href="/privacy/">Read the complete privacy and permissions disclosure →</a>}
-  </figcaption>
+  {showLink &&
+    <figcaption>
+      <a href="/privacy/">Read the complete privacy and permissions disclosure →</a>
+    </figcaption>
+  }
 </figure>
 <style>
   .diagram-container { margin: 2rem 0; width: 100%; }
@@ -50,9 +49,9 @@ const shared = ['Study and participant labels', 'Code names, hierarchy and color
   @media (max-width: 760px) {
     .boundary-svg { display: none; }
     .boundary-mobile { display: block; }
-    .boundary-mobile section { border: 2px solid var(--rule); padding: 1rem; }
+    .boundary-mobile section { border: 2px solid var(--rule); padding: 1rem; margin-bottom: 1rem; }
     .boundary-mobile h3 { font-size: 1.125rem; margin-bottom: 0.75rem; }
     .boundary-mobile ul { padding-left: 1.25rem; line-height: 1.6; }
-    .sync-label { font-family: var(--font-mono); font-size: 0.875rem; margin: 1rem 0; }
+    .footnote { font-family: var(--font-mono); font-size: 0.875rem; margin-top: 1rem; }
   }
 </style>

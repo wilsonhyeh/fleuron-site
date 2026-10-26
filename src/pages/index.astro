@@ -8,7 +8,7 @@ import WindowChrome from '../components/WindowChrome.astro';
 import BoundaryDiagram from '../components/BoundaryDiagram.astro';
 import { Image } from 'astro:assets';
 import transcriptScreen from '../assets/screens/transcript-coding.webp';
-import codebookScreen from '../assets/screens/codebook-panel.webp';
+import savedLocationScreen from '../assets/screens/saved-location.webp';
 import exportScreen from '../assets/screens/export-dialog.webp';
 import { fetchLatestRelease } from '../lib/release';
 import { siteFacts } from '../content/site-facts';
@@ -105,14 +105,14 @@ const release = await fetchLatestRelease();
     <WindowChrome title={`Fleuron v${release.version} — Qualitative Workspace`}>
       <Image
         src={transcriptScreen}
-        alt="Fleuron transcript view showing a volunteer interview with open coding bubble over text about garden plot rules"
+        alt="Fleuron transcript view showing a community-garden interview with a coded passage, two code labels and a Saved status in the toolbar"
         width={1440}
         height={900}
         loading="eager"
       />
     </WindowChrome>
     <p class="screenshot-caption">
-      Synthetic community-garden interview in the demo workspace. Span-level and whole-turn coding with keyboard navigation.
+      Synthetic community-garden interview in the demo workspace. Coded spans, code labels and the save status.
     </p>
   </section>
 
@@ -137,14 +137,28 @@ const release = await fetchLatestRelease();
       </Frame>
 
       <Frame class="feature-card">
-        <h3 class="feature-title">Reflexive memos</h3>
+        <h3 class="feature-title">Saving you can see</h3>
         <p class="feature-text">
-          Write analytic memos and methodological notes alongside your transcripts. Memo fields are excluded from collaboration sync; exports can include them.
+          Notes save after a typing pause. The toolbar reports Saved, Saving…, or a count of unsaved notes, and File&nbsp;&gt;&nbsp;Save commits everything at once.
         </p>
       </Frame>
 
       <Frame class="feature-card">
-        <h3 class="feature-title">Multi-format import & rich export</h3>
+        <h3 class="feature-title">Reflexive memos</h3>
+        <p class="feature-text">
+          Write analytic memos and methodological notes alongside your transcripts. Exports can include them.
+        </p>
+      </Frame>
+
+      <Frame class="feature-card">
+        <h3 class="feature-title">Your study folder, visible</h3>
+        <p class="feature-text">
+          Click Saved to see which folder on your computer holds the study, open it in Finder or File Explorer, or copy its path.
+        </p>
+      </Frame>
+
+      <Frame class="feature-card">
+        <h3 class="feature-title">Import and export</h3>
         <p class="feature-text">
           Import plain text, Word .docx files, .vtt/.srt transcripts, and CSV/TSV text. Export self-contained HTML reports, formatted PDFs, and CSV matrices.
         </p>
@@ -161,9 +175,6 @@ const release = await fetchLatestRelease();
       {siteFacts.privacy}
     </p>
     <BoundaryDiagram />
-    <div class="boundary-link">
-      <a href="/privacy/" class="text-link">Read the complete data boundary and permissions disclosure →</a>
-    </div>
   </section>
 
   <Rule />
@@ -172,15 +183,15 @@ const release = await fetchLatestRelease();
   <section class="section-dual-screens">
     <div class="screens-grid">
       <div>
-        <WindowChrome title="Fleuron — Codebook Hierarchy">
+        <WindowChrome title="Fleuron — Where your work is saved">
           <Image
-            src={codebookScreen}
-            alt="Fleuron codebook panel showing hierarchical codes and color swatches"
+            src={savedLocationScreen}
+            alt="Fleuron save status popover naming the study folder, with Show in Finder and Copy path buttons"
             width={1440}
             height={900}
           />
         </WindowChrome>
-        <p class="screenshot-caption">Hierarchical codebook with color swatches and code counts.</p>
+        <p class="screenshot-caption">Saved names the folder that holds the study, and opens it.</p>
       </div>
 
       <div>
@@ -215,6 +226,13 @@ const release = await fetchLatestRelease();
   <section class="section-limits">
     <h2 class="section-title">Honest limits</h2>
     <div class="limits-grid">
+      <div class="limit-item">
+        <h3 class="limit-title">Collaboration is paused</h3>
+        <p class="limit-text">
+          {siteFacts.collaboration}
+        </p>
+      </div>
+
       <div class="limit-item">
         <h3 class="limit-title">Unsigned installers</h3>
         <p class="limit-text">
@@ -253,8 +271,9 @@ const release = await fetchLatestRelease();
   <section class="faq" aria-labelledby="faq-title">
     <h2 id="faq-title" class="section-title">Common questions</h2>
     <details><summary>What is free, and what will be paid?</summary><p>{siteFacts.pricing}</p></details>
-    <details><summary>Can I code without an account or internet connection?</summary><p>No account is needed for local coding. {siteFacts.network}</p></details>
-    <details><summary>What data syncs?</summary><p>{siteFacts.privacy} <a href="/privacy/">Read the full disclosure</a>.</p></details>
+    <details><summary>Can I code without an account or internet connection?</summary><p>Yes. {siteFacts.localOnly}</p></details>
+    <details><summary>Is there cloud sync or a shared workspace?</summary><p>Not in this release. {siteFacts.collaboration} <a href="/privacy/">Read the data disclosure</a>.</p></details>
+    <details><summary>Where is my work saved, and does it save itself?</summary><p>{siteFacts.saving}</p></details>
     <details><summary>Which import and export formats are supported?</summary><p>Import .txt, .md, .docx, .vtt, .srt, .csv and .tsv transcripts. Export HTML and PDF reports and CSV coded passages or framework matrices. Fleuron does not import native NVivo project files.</p></details>
     <details><summary>Which operating systems are supported?</summary><p>{siteFacts.platforms} <a href="/download/">Check download and installation details</a>.</p></details>
     <details><summary>Does software replace methodological judgment?</summary><p>No. Fleuron helps you organize coding and memos. It does not validate interpretations, establish research rigor or certify compliance. <a href="/guides/reflexive-thematic-analysis/">Read the workflow guide</a>.</p></details>
@@ -381,18 +400,6 @@ const release = await fetchLatestRelease();
     font-size: 1.0625rem;
     line-height: 1.5;
     color: var(--ink);
-  }
-
-  .boundary-link {
-    margin-top: 1rem;
-  }
-
-  .text-link {
-    font-family: var(--font-mono);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--ink);
-    text-decoration: underline;
   }
 
   .screens-grid {

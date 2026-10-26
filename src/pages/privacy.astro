@@ -12,7 +12,7 @@ const release = await fetchLatestRelease();
 
 <Layout
   title="Privacy & Data Boundary"
-  description="Exact data boundary disclosure for Fleuron desktop app and fleuron.study website. Local data, optional collaboration, update checks and website hosting."
+  description="Exact data boundary disclosure for Fleuron 2.8.0 and the fleuron.study website: what stays local, the update check, the paused collaboration feature and website hosting."
   releaseVersion={release.version}
   releaseDate={release.publishedAt}
 >
@@ -20,7 +20,7 @@ const release = await fetchLatestRelease();
     <header class="page-header">
       <h1 class="page-title">Privacy & Data Boundary</h1>
       <p class="page-lead">
-        Fleuron is designed for research where raw transcripts and sensitive quotes must not leave your control. This page discloses the data boundaries for both the application and this website.
+        Fleuron is designed for research where raw transcripts and sensitive quotes must not leave your control. This page discloses what the application stores, what it contacts on the network, and how this website is hosted.
       </p>
     </header>
 
@@ -30,27 +30,40 @@ const release = await fetchLatestRelease();
     <section class="section-app-privacy">
       <h2 class="section-title">1. The desktop application</h2>
       <p class="section-text">
-        {siteFacts.network}
+        {siteFacts.localOnly}
       </p>
 
-      <BoundaryDiagram showLink={false} />
+      <div class="diagram-wide">
+        <BoundaryDiagram showLink={false} />
+      </div>
 
-      <p class="section-text">{siteFacts.credentials}</p>
-      <h3 class="subsection-title">Data boundary field disclosure</h3>
+      <p class="section-text">
+        Exports and backups are saved where you choose, and can leave the device through sharing or a synced folder.
+      </p>
+
+      <p class="section-text">{siteFacts.network}</p>
+
+      <h3 class="subsection-title">Collaboration is paused</h3>
+      <p class="section-text">{siteFacts.collaboration}</p>
+      <p class="section-text">
+        Nothing in the field table below is sent while collaboration is paused. The table stays here so the boundary is documented before the feature returns.
+      </p>
+
+      <h3 class="subsection-title">Field disclosure for when collaboration returns</h3>
       <div class="table-container">
         <table class="data-table">
           <thead>
             <tr>
               <th>Category</th>
-              <th>Synced when collaboration is active</th>
-              <th>Excluded from collaboration sync</th>
+              <th>Would sync when collaboration returns</th>
+              <th>Stays on this computer, or is never sent</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Account & Access</strong></td>
               <td>Account email, auth metadata, study membership, coder display name, device sync state</td>
-              <td>Stored credential files, local application preferences, working folder paths. Credential values are used with the auth service.</td>
+              <td>Local application preferences and working folder paths. If sign-in returns, stored credential files stay on this computer and are sent only to the sign-in service.</td>
             </tr>
             <tr>
               <td><strong>Study Identity</strong></td>
@@ -79,10 +92,10 @@ const release = await fetchLatestRelease();
       <Callout title="Important research caveats">
         <ul class="caveat-list">
           <li>
-            <strong>De-identification is researcher-owned:</strong> {siteFacts.privacy}
+            <strong>De-identification is researcher-owned:</strong> If collaboration returns, codebook definitions, examples and study labels would sync as written, including any quotes copied into them. Keep identifying information out of those fields. Fleuron cannot de-identify your material for you.
           </li>
           <li>
-            <strong>Transport encryption vs operator access:</strong> HTTPS/WSS encrypts data in transit. This protects against wiretapping, but does not make synced metadata unknowable to the server host.
+            <strong>Transport encryption vs operator access:</strong> Collaboration would use HTTPS/WSS, which encrypts data in transit. That protects against wiretapping, but does not make synced metadata unknowable to the server host.
           </li>
           <li>
             <strong>Protocol support vs compliance:</strong> Fleuron can support a research protocol; it does not certify compliance of any kind.
@@ -112,7 +125,7 @@ const release = await fetchLatestRelease();
       <Frame class="guarantee-card">
         <ul class="guarantee-list">
           <li><strong>Visit counts, no cross-site tracking:</strong> We count page visits with Cloudflare Web Analytics. It sets no cookies and does not track you across sites; it records the page visited, the referrer, and basic browser, device and load-performance facts. We run no Google Analytics, Plausible, PostHog, advertising trackers, or tracking pixels.</li>
-          <li><strong>Theme storage:</strong> The theme toggle stores your choice in browser local storage. We do not add tracking cookies.</li>
+          <li><strong>Nothing stored in your browser:</strong> This site sets no cookies and writes nothing to local storage. It is light-only, so there is no theme preference to save.</li>
           <li><strong>No forms or inputs:</strong> We collect no emails, names, newsletters, or visitor submissions.</li>
           <li><strong>Page assets:</strong> Fonts, styles, scripts and images are served from this domain, except the Cloudflare analytics beacon (<span class="mono-code">static.cloudflareinsights.com</span>). Cloudflare can separately receive browser network-error reports. <a href={siteFacts.sources.nel}>Read Cloudflare’s explanation</a>.</li>
           <li><strong>What checks cover:</strong> Our asset-reference check scans generated HTML and CSS for externally hosted resources, allowing only the analytics beacon above. It does not prove the absence of every runtime request or hosting-layer report.</li>
@@ -161,11 +174,19 @@ const release = await fetchLatestRelease();
     margin-bottom: 1.5rem;
   }
 
+  /* The diagram is drawn at 880px; let it use that width instead of being
+     squeezed into the 68ch text measure, where its labels shrink too far. */
+  @media (min-width: 1000px) {
+    .diagram-wide {
+      width: 880px;
+      margin-inline: calc(50% - 440px);
+    }
+  }
+
   .table-container {
     overflow-x: auto;
     margin: 1.5rem 0;
   }
-
   .data-table {
     width: 100%;
     border-collapse: collapse;

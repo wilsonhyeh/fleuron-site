@@ -53,39 +53,12 @@
   --font-size-base: 1.125rem;
   --line-height-base: 1.6;
   --measure: 68ch;
+
+  /* Light-only site: keep UA widgets (scrollbars, form controls, details
+     markers) light even when the operating system asks for a dark scheme. */
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #141210;
-    --ink: #F3EEE3;
-    --rule: #F3EEE3;
-    --gold: #E8B93C;
-    --gold-fill: #E8B93C;
-    --gold-ink: #14120E;
-    --muted: #A8A093;
-  }
-}
-
-:root[data-theme="dark"] {
-  --paper: #141210;
-  --ink: #F3EEE3;
-  --rule: #F3EEE3;
-  --gold: #E8B93C;
-  --gold-fill: #E8B93C;
-  --gold-ink: #14120E;
-  --muted: #A8A093;
-}
-
-:root[data-theme="light"] {
-  --paper: #F7F3EA;
-  --ink: #14120E;
-  --rule: #14120E;
-  --gold: #8A6410;
-  --gold-fill: #E8B93C;
-  --gold-ink: #14120E;
-  --muted: #5A554A;
-}
 
 *, *::before, *::after {
   box-sizing: border-box;

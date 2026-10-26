@@ -13,8 +13,8 @@ interface Props {
 const {
   title = 'Fleuron',
   description = 'Fleuron is an offline-first qualitative analysis app for reflexive thematic analysis. Runs on your computer. Free forever for offline coding.',
-  releaseVersion = '2.1.0',
-  releaseDate = '2026-08-29',
+  releaseVersion = '2.8.0',
+  releaseDate = '2026-10-26',
   noindex = false,
 } = Astro.props;
 
@@ -34,8 +34,7 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F3EA" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141210" />
+    <meta name="theme-color" content="#F7F3EA" />
     {!noindex && <link rel="canonical" href={canonicalURL} />}
     {noindex && <meta name="robots" content="noindex" />}
 
@@ -55,17 +54,6 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogImageURL} />
-
-    <script is:inline>
-      (function() {
-        try {
-          var saved = localStorage.getItem('theme');
-          if (saved === 'dark' || saved === 'light') {
-            document.documentElement.dataset.theme = saved;
-          }
-        } catch (e) {}
-      })();
-    </script>
   </head>
   <body>
     <header class="site-header">
@@ -82,16 +70,6 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
           <a href="/privacy/" class="nav-link">Privacy</a>
           <a href="/support/" class="nav-link">Support</a>
         </nav>
-
-        <button
-          type="button"
-          id="theme-toggle"
-          class="theme-toggle-btn"
-          aria-label="Toggle dark mode"
-          title="Toggle theme"
-        >
-          <span class="theme-toggle-label" id="theme-toggle-text">Theme</span>
-        </button>
       </div>
     </header>
 
@@ -113,35 +91,6 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
         </div>
       </div>
     </footer>
-
-    <script is:inline>
-      (function() {
-        var btn = document.getElementById('theme-toggle');
-        var text = document.getElementById('theme-toggle-text');
-        
-        function updateButtonLabel() {
-          if (!text) return;
-          var currentTheme = document.documentElement.dataset.theme;
-          var isDark = currentTheme === 'dark' || (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          text.textContent = isDark ? 'Light' : 'Dark';
-        }
-
-        updateButtonLabel();
-
-        if (btn) {
-          btn.addEventListener('click', function() {
-            try {
-              var current = document.documentElement.dataset.theme;
-              var isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
-              var next = isDark ? 'light' : 'dark';
-              document.documentElement.dataset.theme = next;
-              localStorage.setItem('theme', next);
-              updateButtonLabel();
-            } catch (e) {}
-          });
-        }
-      })();
-    </script>
 
     <!-- Cloudflare Web Analytics --><script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "062c64bf8aca454e81b3a4cc5eb0b831"}'></script><!-- End Cloudflare Web Analytics -->
   </body>
@@ -206,22 +155,6 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
   .nav-link:hover {
     border-bottom-color: var(--rule);
     text-decoration: none;
-  }
-
-  .theme-toggle-btn {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    background: var(--paper);
-    color: var(--ink);
-    border: 2px solid var(--rule);
-    padding: 0.375rem 0.75rem;
-    cursor: pointer;
-    box-shadow: 2px 2px 0 var(--rule);
-  }
-
-  .theme-toggle-btn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 var(--rule);
   }
 
   .main-content {
