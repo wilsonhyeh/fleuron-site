@@ -1,6 +1,7 @@
 ---
 import '../styles/tokens.css';
 import { pageFor } from '../content/site-pages';
+import { fetchLatestRelease } from '../lib/release';
 
 interface Props {
   title?: string;
@@ -13,10 +14,19 @@ interface Props {
 const {
   title = 'Fleuron',
   description = 'Fleuron is an offline-first qualitative analysis app for reflexive thematic analysis. Runs on your computer. Free forever for offline coding.',
-  releaseVersion = '2.8.0',
-  releaseDate = '2026-10-26',
+  releaseVersion,
+  releaseDate,
   noindex = false,
 } = Astro.props;
+
+// The release identity has one source: the GitHub release this build reads.
+// Pages pass it down after fetching it; the layout resolves it here too, so a
+// page that does not (the 404) still renders the real version. The fetch is
+// cached for the build, and a failure stops the build rather than printing a
+// stale version literal.
+const latest = await fetchLatestRelease();
+const version = releaseVersion ?? latest.version;
+const date = releaseDate ?? latest.publishedAt;
 
 const page = pageFor(Astro.url.pathname);
 const pageTitle = page?.title ?? title;
@@ -80,7 +90,7 @@ const ogImageURL = new URL('/og.png', Astro.site || 'https://fleuron.study');
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-meta">
-          <span class="footer-version">Fleuron v{releaseVersion} ({releaseDate})</span>
+          <span class="footer-version">Fleuron v{version} ({date})</span>
           <span class="footer-sep" aria-hidden="true">/</span>
           <a href="https://github.com/wilsonhyeh/fleuron" target="_blank" rel="noopener noreferrer">Source on GitHub</a>
           <span class="footer-sep" aria-hidden="true">/</span>

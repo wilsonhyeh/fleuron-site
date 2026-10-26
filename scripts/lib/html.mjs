@@ -49,9 +49,9 @@ export function auditPage(html, page, { errorPage = false } = {}) {
         expect(schema.offers?.price === 0 && schema.offers?.priceCurrency === 'USD', 'offline offer must be free');
         expect(schema.license === 'https://github.com/wilsonhyeh/fleuron/blob/main/LICENSE', 'license mismatch');
         expect(schema.operatingSystem?.includes('macOS 14+') && schema.operatingSystem?.includes('Windows 11 x64'), 'support mismatch');
-        // Truthfulness guard for the product claim in structured data. 2.8.0
-        // has no account or sync service, so the schema must state the local
-        // scope and must not advertise collaboration as available.
+        // Truthfulness guard for the product claim in structured data. The
+        // current release has no account or sync service, so the schema must
+        // state the local scope and must not advertise collaboration.
         expect(schema.description?.includes('no account'), 'description omits local-only scope');
         expect(!/optional team sync|hosted collaboration|free during beta/i.test(schema.description ?? ''), 'description advertises paused collaboration');
       }

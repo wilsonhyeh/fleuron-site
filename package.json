@@ -12,13 +12,14 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest run",
+    "check:copy": "node scripts/check-copy.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check:contrast": "playwright test tests/contrast.spec.ts",
     "check:no-external": "node scripts/check-no-external.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "check:examples": "node scripts/check-examples.mjs",
     "check:browser": "playwright test tests/site-behavior.spec.ts",
-    "verify:static": "npm run build && npm run check && npm run check:links && npm test && npm run check:no-external && npm run check:seo && npm run check:examples",
+    "verify:static": "npm run build && npm run check && npm run check:copy && npm run check:links && npm test && npm run check:no-external && npm run check:seo && npm run check:examples",
     "verify": "npm run verify:static && npm run check:contrast && npm run check:browser"
   },
   "dependencies": {
