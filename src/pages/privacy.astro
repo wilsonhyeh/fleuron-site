@@ -19,7 +19,7 @@ const release = await fetchLatestRelease();
     <header class="page-header">
       <h1 class="page-title">Privacy & Data Boundary</h1>
       <p class="page-lead">
-        Fleuron is designed for research where raw transcripts and sensitive quotes must not leave your control. This page discloses what the application stores, what it contacts on the network, and how this website is hosted.
+        Built for research where transcripts and quotes stay in your control. What the app stores, what it contacts online, and how this site is hosted.
       </p>
     </header>
 
@@ -27,7 +27,7 @@ const release = await fetchLatestRelease();
 
     <!-- Part 1: The Application -->
     <section class="section-app-privacy">
-      <h2 class="section-title">1. The desktop application</h2>
+      <h2 class="section-title">1. The app</h2>
       <p class="section-text">
         {siteFacts.localOnly}
       </p>
@@ -37,77 +37,28 @@ const release = await fetchLatestRelease();
       </div>
 
       <p class="section-text">
-        Exports and backups are saved where you choose, and can leave the device through sharing or a synced folder.
+        Fleuron is a single-user desktop app: a study is a folder you choose, and exports or backups leave the device only when you share them or keep the folder in a synced location.
       </p>
 
       <p class="section-text">{siteFacts.network}</p>
 
-      <h3 class="subsection-title">Collaboration is paused</h3>
-      <p class="section-text">{siteFacts.collaboration}</p>
-      <p class="section-text">
-        Nothing in the field table below is sent while collaboration is paused. The table stays here so the boundary is documented before the feature returns.
-      </p>
-
-      <h3 class="subsection-title">Field disclosure for when collaboration returns</h3>
-      <div class="table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Would sync when collaboration returns</th>
-              <th>Stays on this computer, or is never sent</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Account & Access</strong></td>
-              <td>Account email, auth metadata, study membership, coder display name, device sync state</td>
-              <td>Local application preferences and working folder paths. If sign-in returns, stored credential files stay on this computer and are sent only to the sign-in service.</td>
-            </tr>
-            <tr>
-              <td><strong>Study Identity</strong></td>
-              <td>Study title, de-identified participant IDs, interview IDs, segment counts, content hashes</td>
-              <td>Raw transcript files, full transcript text, original filenames, interview dates, diagnosis fields</td>
-            </tr>
-            <tr>
-              <td><strong>Codebook</strong></td>
-              <td>Code IDs, code names, definitions, inclusion criteria, exclusion criteria, examples, hierarchy, color</td>
-              <td>None (codebook text syncs word-for-word so teams share definitions; author them de-identified)</td>
-            </tr>
-            <tr>
-              <td><strong>Coding</strong></td>
-              <td>Coder attribution, segment IDs, code IDs, character start/end offsets, timestamps</td>
-              <td>Verbatim quote text, coding memos, analytic memos, reflective notes</td>
-            </tr>
-            <tr>
-              <td><strong>Output & Diagnostics</strong></td>
-              <td>Nothing automatically</td>
-              <td>Exported reports, local SQLite databases, backup files, crash logs</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <Callout title="Important research caveats">
+      <Callout title="Research caveats">
         <ul class="caveat-list">
           <li>
-            <strong>De-identification is researcher-owned:</strong> If collaboration returns, codebook definitions, examples and study labels would sync as written, including any quotes copied into them. Keep identifying information out of those fields. Fleuron cannot de-identify your material for you.
+            <strong>De-identification is yours:</strong> Fleuron does not de-identify your material. Transcripts, code names, definitions and memos are stored and exported as written, so keep identifying information out of anything you share.
           </li>
           <li>
-            <strong>Transport encryption vs operator access:</strong> Collaboration would use HTTPS/WSS, which encrypts data in transit. That protects against wiretapping, but does not make synced metadata unknowable to the server host.
-          </li>
-          <li>
-            <strong>Protocol support vs compliance:</strong> Fleuron can support a research protocol; it does not certify compliance of any kind.
+            <strong>Method vs compliance:</strong> Fleuron can support a research protocol; it does not certify compliance of any kind.
           </li>
         </ul>
       </Callout>
 
       <div class="doc-links">
         <a href="https://github.com/wilsonhyeh/fleuron/blob/main/docs/PRIVACY-AND-PERMISSIONS.md" target="_blank" rel="noopener noreferrer" class="doc-link">
-          Read docs/PRIVACY-AND-PERMISSIONS.md on GitHub →
+          Privacy and permissions doc →
         </a>
         <a href="https://github.com/wilsonhyeh/fleuron/blob/main/docs/IT-DEPLOYMENT.md" target="_blank" rel="noopener noreferrer" class="doc-link">
-          Read docs/IT-DEPLOYMENT.md on GitHub →
+          IT deployment doc →
         </a>
       </div>
     </section>
@@ -116,18 +67,17 @@ const release = await fetchLatestRelease();
 
     <!-- Part 2: The Website -->
     <section class="section-web-privacy">
-      <h2 class="section-title">2. This website (fleuron.study)</h2>
+      <h2 class="section-title">2. This site</h2>
       <p class="section-text">
         {siteFacts.website}
       </p>
 
       <Frame class="guarantee-card">
         <ul class="guarantee-list">
-          <li><strong>Visit counts, no cross-site tracking:</strong> We count page visits with Cloudflare Web Analytics. It sets no cookies and does not track you across sites; it records the page visited, the referrer, and basic browser, device and load-performance facts. We run no Google Analytics, Plausible, PostHog, advertising trackers, or tracking pixels.</li>
-          <li><strong>Nothing stored in your browser:</strong> This site sets no cookies and writes nothing to local storage. It is light-only, so there is no theme preference to save.</li>
-          <li><strong>No forms or inputs:</strong> We collect no emails, names, newsletters, or visitor submissions.</li>
-          <li><strong>Page assets:</strong> Fonts, styles, scripts and images are served from this domain, except the Cloudflare analytics beacon (<span class="mono-code">static.cloudflareinsights.com</span>). Cloudflare can separately receive browser network-error reports. <a href={siteFacts.sources.nel}>Read Cloudflare’s explanation</a>.</li>
-          <li><strong>What checks cover:</strong> Our asset-reference check scans generated HTML and CSS for externally hosted resources, allowing only the analytics beacon above. It does not prove the absence of every runtime request or hosting-layer report.</li>
+          <li><strong>Nothing stored in your browser:</strong> no cookies, no local storage, no theme setting — the site is light-only.</li>
+          <li><strong>No forms or inputs:</strong> no emails, names, newsletters or visitor submissions are collected.</li>
+          <li><strong>Only one external asset:</strong> the analytics beacon (<span class="mono-code">static.cloudflareinsights.com</span>). <a href={siteFacts.sources.nel}>Cloudflare’s error reporting</a>.</li>
+          <li><strong>Scope of the check:</strong> the asset-reference check scans generated HTML and CSS, not every runtime request.</li>
         </ul>
       </Frame>
     </section>
@@ -161,12 +111,6 @@ const release = await fetchLatestRelease();
     margin-bottom: 1rem;
   }
 
-  .subsection-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 2rem 0 1rem;
-  }
-
   .section-text {
     font-size: 1.125rem;
     line-height: 1.6;
@@ -180,36 +124,6 @@ const release = await fetchLatestRelease();
       width: 880px;
       margin-inline: calc(50% - 440px);
     }
-  }
-
-  .table-container {
-    overflow-x: auto;
-    margin: 1.5rem 0;
-  }
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 3px solid var(--rule);
-    box-shadow: 4px 4px 0 var(--rule);
-    background: var(--paper);
-  }
-
-  .data-table th,
-  .data-table td {
-    border: 1px solid var(--rule);
-    padding: 0.75rem 1rem;
-    text-align: left;
-    font-size: 0.9375rem;
-    line-height: 1.5;
-  }
-
-  .data-table th {
-    background: var(--paper);
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--rule);
   }
 
   .caveat-list {

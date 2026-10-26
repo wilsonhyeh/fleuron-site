@@ -18,7 +18,7 @@ const release = await fetchLatestRelease();
     <header class="page-header">
       <h1 class="page-title">Support</h1>
       <p class="page-lead">
-        Fleuron is maintained by one person. Ordinary support uses public GitHub Issues; security reports use private GitHub reporting. There is no email support or live chat.
+        Support runs through public GitHub Issues; security reports are private. No email or chat.
       </p>
     </header>
 
@@ -27,10 +27,6 @@ const release = await fetchLatestRelease();
     <!-- Guided Issue Forms -->
     <section class="support-section">
       <h2 class="section-title">Install help or bug reports</h2>
-      <p class="section-text">
-        Please use the guided issue templates on GitHub to report problems:
-      </p>
-
       <div class="issue-cards">
         <Frame class="issue-card">
           <h3 class="issue-title">Installation assistance</h3>
@@ -68,14 +64,14 @@ const release = await fetchLatestRelease();
     <section class="diagnostic-section">
       <h2 class="section-title">Generating diagnostic reports safely</h2>
       <p class="section-text">
-        To help diagnose issues without exposing research participants or sensitive transcripts, use these two diagnostic tools, then review the output before sharing:
+        Use these two tools, then read the output before sharing it:
       </p>
 
       <div class="diag-methods">
         <div class="diag-method">
           <h3 class="method-title">1. When Fleuron opens (In-App)</h3>
           <p class="method-desc">
-            Go to <strong>About → Generate diagnostic report</strong>. This generates an allowlist-redacted summary of your installation, storage and update state. You can review the plain text in the app before copying or saving it.
+            Go to <strong>About → Generate diagnostic report</strong>. It summarizes installation, storage and update state, allowlist-redacted, and you can read it before copying or saving.
           </p>
         </div>
 
@@ -90,17 +86,14 @@ bash support/fleuron-probe.sh --output fleuron-diag.txt
 # Windows:
 powershell -NoProfile -File support\Get-FleuronProbe.ps1 -OutputFilePath fleuron-diag.txt</code></pre>
           <p class="method-desc">
-            Both probe scripts are strictly read-only and never alter system or study files.
+            Both scripts are read-only and never change system or study files.
           </p>
         </div>
       </div>
 
       <Callout title="Before attaching anything to an issue">
         <p>
-          <strong>Do not upload sensitive data:</strong> Never attach transcripts, verbatim quotes, participant/study identifiers, project database files (<code class="mono-code">project.db</code>), auth tokens, or private URLs.
-        </p>
-        <p>
-          Crash logs may contain local file paths — review and redact them before posting.
+          <strong>Never attach</strong> transcripts, quotes, participant or study identifiers, <code class="mono-code">project.db</code>, tokens or private URLs. Crash logs can contain local paths — redact them first.
         </p>
       </Callout>
     </section>
@@ -114,20 +107,17 @@ powershell -NoProfile -File support\Get-FleuronProbe.ps1 -OutputFilePath fleuron
         <div>
           <h3 class="sec-subtitle">Security vulnerabilities</h3>
           <p class="sec-text">
-            Report security vulnerabilities privately through GitHub's security advisories tab at{' '}
+            Report vulnerabilities privately at{' '}
             <a href="https://github.com/wilsonhyeh/fleuron/security" target="_blank" rel="noopener noreferrer">
               github.com/wilsonhyeh/fleuron/security
-            </a>. Do not open public issues for security vulnerabilities.
+            </a>, not in a public issue.
           </p>
         </div>
 
         <div>
           <h3 class="sec-subtitle">Institutional IT & managed devices</h3>
           <p class="sec-text">
-            For campus IT deployment, AppLocker policies, and group management, refer to the{' '}
-            <a href="https://github.com/wilsonhyeh/fleuron/blob/main/docs/IT-DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">
-              IT Deployment Guide (docs/IT-DEPLOYMENT.md)
-            </a>.
+            Campus deployment and AppLocker guidance: <a href="https://github.com/wilsonhyeh/fleuron/blob/main/docs/IT-DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">IT deployment guide</a>.
           </p>
         </div>
       </div>

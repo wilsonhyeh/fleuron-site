@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Frame from '../components/Frame.astro';
 import Rule from '../components/Rule.astro';
-import Mark from '../components/Mark.astro';
 import WindowChrome from '../components/WindowChrome.astro';
 import BoundaryDiagram from '../components/BoundaryDiagram.astro';
 import { Image } from 'astro:assets';
@@ -37,9 +36,6 @@ const release = await fetchLatestRelease();
       <p class="hero-lead">
         {siteFacts.lead}
       </p>
-      <p class="hero-origin"><Mark>I built Fleuron because I wanted to code interviews without a software subscription or uploading my transcripts to a hosted analysis service.</Mark>
-      </p>
-
       <p class="offer-scope">{siteFacts.pricingShort}</p>
       <div class="hero-cta">
         <div class="cta-buttons" id="download-cta-group">
@@ -125,42 +121,42 @@ const release = await fetchLatestRelease();
       <Frame class="feature-card">
         <h3 class="feature-title">Span and whole-turn coding</h3>
         <p class="feature-text">
-          Code precise word spans or entire speaker turns. Use the coding bubble and keyboard shortcuts to assign codes.
+          Code word spans or whole speaker turns, with the coding bubble and keyboard shortcuts.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Living codebook</h3>
         <p class="feature-text">
-          Organize evolving codes into hierarchies. Add optional definitions, criteria and examples as your interpretation develops.
+          Build an evolving code hierarchy with optional definitions and examples.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Saving you can see</h3>
         <p class="feature-text">
-          Notes save after a typing pause. The toolbar reports Saved, Saving…, or a count of unsaved notes, and File&nbsp;&gt;&nbsp;Save commits everything at once.
+          Notes save after a typing pause; the toolbar shows Saved, Saving… or unsaved notes.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Reflexive memos</h3>
         <p class="feature-text">
-          Write analytic memos and methodological notes alongside your transcripts. Exports can include them.
+          Write analytic and methodological memos beside your transcripts.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Your study folder, visible</h3>
         <p class="feature-text">
-          Click Saved to see which folder on your computer holds the study, open it in Finder or File Explorer, or copy its path.
+          Click Saved to see the study folder, open it, or copy its path.
         </p>
       </Frame>
 
       <Frame class="feature-card">
         <h3 class="feature-title">Import and export</h3>
         <p class="feature-text">
-          Import plain text, Word .docx files, .vtt/.srt transcripts, and CSV/TSV text. Export self-contained HTML reports, formatted PDFs, and CSV matrices.
+          Import .txt, .md, .docx, .vtt, .srt, .csv and .tsv; export HTML, PDF and CSV.
         </p>
       </Frame>
     </div>
@@ -227,16 +223,16 @@ const release = await fetchLatestRelease();
     <h2 class="section-title">Honest limits</h2>
     <div class="limits-grid">
       <div class="limit-item">
-        <h3 class="limit-title">Collaboration is paused</h3>
+        <h3 class="limit-title">Local only</h3>
         <p class="limit-text">
-          {siteFacts.collaboration}
+          Fleuron is a single-user desktop application: no accounts, no cloud sync and no shared workspace. A study is a folder on your computer.
         </p>
       </div>
 
       <div class="limit-item">
         <h3 class="limit-title">Unsigned installers</h3>
         <p class="limit-text">
-          {siteFacts.signing} <a href="/install/">Read the installation guide</a>.
+          {siteFacts.signing} <a href="/install/">Expected warnings</a>.
         </p>
       </div>
 
@@ -246,43 +242,24 @@ const release = await fetchLatestRelease();
           {siteFacts.platforms}
         </p>
       </div>
-
-      <div class="limit-item">
-        <h3 class="limit-title">Single maintainer</h3>
-        <p class="limit-text">
-          Fleuron is built and maintained by one researcher who uses it for qualitative work.
-        </p>
-      </div>
-
-      <div class="limit-item">
-        <h3 class="limit-title">Issue tracker support</h3>
-        <p class="limit-text">
-          Ordinary support uses public GitHub Issues. Report security vulnerabilities privately through GitHub security reporting. There is no email support or chat helpdesk.
-        </p>
-      </div>
     </div>
   </section>
   <Rule />
   <section class="section-learning">
     <h2 class="section-title">Try a small analysis</h2>
-    <p class="section-lead">Start with fictional interviews and follow the <a href="/guides/code-interview-transcripts/">transcript-coding tutorial</a>. Explore a <a href="/guides/reflexive-thematic-analysis/">reflexive thematic analysis workflow</a> or <a href="/compare/free-qualitative-analysis-software/">compare Fleuron, Taguette and QualCoder</a>.</p>
+    <p class="section-lead">Start with the <a href="/guides/code-interview-transcripts/">transcript-coding tutorial</a>, then try the <a href="/guides/reflexive-thematic-analysis/">reflexive thematic analysis workflow</a> or <a href="/compare/free-qualitative-analysis-software/">compare Fleuron with Taguette and QualCoder</a>.</p>
   </section>
   <Rule />
   <section class="faq" aria-labelledby="faq-title">
     <h2 id="faq-title" class="section-title">Common questions</h2>
-    <details><summary>What is free, and what will be paid?</summary><p>{siteFacts.pricing}</p></details>
-    <details><summary>Can I code without an account or internet connection?</summary><p>Yes. {siteFacts.localOnly}</p></details>
-    <details><summary>Is there cloud sync or a shared workspace?</summary><p>Not in this release. {siteFacts.collaboration} <a href="/privacy/">Read the data disclosure</a>.</p></details>
-    <details><summary>Where is my work saved, and does it save itself?</summary><p>{siteFacts.saving}</p></details>
-    <details><summary>Which import and export formats are supported?</summary><p>Import .txt, .md, .docx, .vtt, .srt, .csv and .tsv transcripts. Export HTML and PDF reports and CSV coded passages or framework matrices. Fleuron does not import native NVivo project files.</p></details>
-    <details><summary>Which operating systems are supported?</summary><p>{siteFacts.platforms} <a href="/download/">Check download and installation details</a>.</p></details>
-    <details><summary>Does software replace methodological judgment?</summary><p>No. Fleuron helps you organize coding and memos. It does not validate interpretations, establish research rigor or certify compliance. <a href="/guides/reflexive-thematic-analysis/">Read the workflow guide</a>.</p></details>
+    <details><summary>Can I code without an internet connection?</summary><p>Yes. Coding never touches the network; Fleuron checks GitHub only for updates. <a href="/privacy/">Data disclosure</a>.</p></details>
+    <details><summary>Can I work with a team?</summary><p>Not inside Fleuron: it is a single-user app, and studies live in a local folder. Share an export to hand work over.</p></details>
+    <details><summary>Does Fleuron replace methodological judgment?</summary><p>No. It organizes codes and memos; it does not validate interpretations or certify compliance. <a href="/guides/reflexive-thematic-analysis/">Workflow guide</a>.</p></details>
   </section>
 </Layout>
 
 <style>
-  .hero-origin, .offer-scope { max-width: var(--measure); margin-bottom: 1.5rem; line-height: 1.6; }
-  .offer-scope { font-family: var(--font-mono); font-size: 0.9375rem; }
+  .offer-scope { max-width: var(--measure); margin-bottom: 1.5rem; line-height: 1.6; font-family: var(--font-mono); font-size: 0.9375rem; }
   .faq details { border-bottom: 1px solid var(--rule); padding: 1rem 0; }
   .faq summary { cursor: pointer; font-weight: 600; font-size: 1.125rem; }
   .faq p { margin: 0.75rem 0; max-width: var(--measure); line-height: 1.6; }
